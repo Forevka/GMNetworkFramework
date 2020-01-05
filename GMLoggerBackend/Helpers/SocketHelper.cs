@@ -5,6 +5,9 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using GMLoggerBackend.Handlers;
+using GMLoggerBackend.Enums;
+using GMLoggerBackend.Exceptions;
 
 namespace GMLoggerBackend.Helpers
 {
@@ -69,7 +72,7 @@ namespace GMLoggerBackend.Helpers
         public void DisconnectClient()
         {
             //Console Message.
-            Console.WriteLine("Disconnecting: " + ClientIPAddress);
+            Console.WriteLine("Disconnecting: " + this.ClientIPAddress);
 
             //Removes client from server.
             ParentServer.Clients.Remove(this);
@@ -158,46 +161,28 @@ namespace GMLoggerBackend.Helpers
                     //Read the header data.
                     ushort constant;
                     readBuffer.Read(out constant);
+                    
 
-                    //Determine input commmand.
-                    switch (constant)
+                    List<IHandler> hList = null;
+
+                    Dictionary<string, string> data = new Dictionary<string, string>();
+
+                    if (ParentServer.Handlers.TryGetValue((RequestFlag)constant, out hList))
+                        hList.ForEach(x => {
+                            try
+                            {
+                                x.Process(readBuffer, this, data);
+                            }
+                            catch (CancelHandlerException)
+                            {
+                                //dont do anything
+                            }
+                        });
+                    else
                     {
-                        //New Connection
-                        case 2000:
-                        {
-                            //Read out client data.
-                            String ip;
-                            readBuffer.Read(out ip);
-
-                            //Update client information.
-                            ClientIPAddress = ip;
-
-                            //Console Message.
-                            Console.WriteLine(ip + $" connected. Hash: {client.GetHashCode()}");
-                            Console.WriteLine(Convert.ToString(ParentServer.Clients.Count) + " clients online.");
-                            break;
-                        }
-
-                        //Recive client ping.
-                        case 2004:
-                        {
-                            //Send ping return to client.
-                            BufferStream buffer = new BufferStream(Server.BufferSize, Server.BufferAlignment);
-                            buffer.Seek(0);
-                            UInt16 constant_out = 1050;
-                            buffer.Write(constant_out);
-                            Console.WriteLine($"Received ping from {client.GetHashCode()}");
-                            SendMessage(buffer);
-                            break;
-                        }
-
-                        //Recive server ping.
-                        case 2005:
-                        {
-                            //Nothing - Ping handled in ping thread.
-                            break;
-                        }
+                        Console.WriteLine($"!!! WARNING !!! NO HANDLERS FOR {constant}");
                     }
+
                 }
                 catch (System.IO.IOException)
                 {

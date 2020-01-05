@@ -25,12 +25,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Global Variables
-global.connected_to_server = false;
-
+            <string>global.connected_to_server = false;
+global.ip_address = "192.168.0.1";
 
 socket  = network_create_socket(network_socket_tcp);
-network_connect_raw(socket, "127.0.0.1", 10103);
 
 ping = 0;
 ping_step = 0;
@@ -38,8 +36,9 @@ ping_timeout = 1 * room_speed * 1
 
 //Set config.
 network_set_timeout(socket, 2000, 2000);
+network_set_config(network_config_use_non_blocking_socket, 1);
 
-client_raw_send_ping();
+network_connect_raw(socket, "127.0.0.1", 10103);
 </string>
           </argument>
         </arguments>
@@ -95,11 +94,13 @@ if (socket_id = socket)
 {
     //Check the type of network event.
     var type = ds_map_find_value(async_load, "type");
+    
     switch (type)
     {
         //Connect Event.
         case network_type_non_blocking_connect:
         {
+            show_debug_message("CONNECTED!")
             var success = ds_map_find_value(async_load, "succeeded");
             if (success = 0)
             {            
@@ -112,7 +113,6 @@ if (socket_id = socket)
                 global.connected_to_server = true;
                 client_raw_send_connection();
                 client_raw_send_ping();
-                //alarm[0] = 1 * room_speed
             }
             break;
         }
@@ -175,6 +175,29 @@ if (socket_id = socket)
         }
     }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_text(20, 20, global.connected_to_server)
 </string>
           </argument>
         </arguments>

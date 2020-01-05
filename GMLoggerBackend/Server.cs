@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using GMLoggerBackend.Helpers;
+using GMLoggerBackend.Handlers;
+using GMLoggerBackend.Enums;
 
 namespace GMLoggerBackend
 {
@@ -17,9 +19,23 @@ namespace GMLoggerBackend
         public Thread PingThread;
         public Thread MatchmakingThread;
         public TcpListener TCPListener = null;
+        public Dictionary<RequestFlag, List<IHandler>> Handlers = new Dictionary<RequestFlag, List<IHandler>>();
 
         public static int BufferAlignment = 1;
         public static int BufferSize = 256;
+
+
+        public void RegisterHandler(RequestFlag flag, IHandler handler)
+        {
+            List<IHandler> hList = null;
+
+            if (Handlers.TryGetValue(flag, out hList))
+                hList.Add(handler);
+            else
+            {
+                Handlers.Add(flag, new List<IHandler>() { handler });
+            }
+        }
 
         /// <summary>
         /// Starts the server.
