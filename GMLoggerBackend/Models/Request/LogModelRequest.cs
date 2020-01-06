@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace GMLoggerBackend.Models.Request
 {
-    public class LogModelRequest
+    public class LogModelRequest : BaseModel
     {
-        public String msg { get; set; } = "";
-        public void FromBuffer(BufferStream buffer)
-        {
-            String _msg; 
-            buffer.Read(out _msg);
-            if (_msg != null) msg = _msg;
-
-        }
+        [Position(0)]
+        public string msg { get; set; }
     }
 }

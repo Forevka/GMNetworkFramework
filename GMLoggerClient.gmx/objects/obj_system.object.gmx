@@ -36,7 +36,7 @@ ping_timeout = 1 * room_speed * 1
 
 //Set config.
 network_set_timeout(socket, 2000, 2000);
-network_set_config(network_config_use_non_blocking_socket, 1);
+//network_set_config(network_config_use_non_blocking_socket, 1);
 
 network_connect_raw(socket, "127.0.0.1", 10103);
 </string>
@@ -123,6 +123,24 @@ if (socket_id = socket)
     {
         //Connect Event.
         case network_type_non_blocking_connect:
+        {
+            show_debug_message("CONNECTED!")
+            var success = ds_map_find_value(async_load, "succeeded");
+            if (success = 0)
+            {            
+                //Failure connection. Retry.
+                global.connected_to_server = false;
+            }
+            else
+            {
+                //Succesful connection.
+                global.connected_to_server = true;
+                client_raw_send_connection();
+                client_raw_send_ping();
+            }
+            break;
+        }
+        case network_type_connect:
         {
             show_debug_message("CONNECTED!")
             var success = ds_map_find_value(async_load, "succeeded");
