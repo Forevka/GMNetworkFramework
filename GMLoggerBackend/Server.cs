@@ -108,8 +108,7 @@ namespace GMLoggerBackend
                 client.SendMessage(buffer);
             }
         }
-
-        public void InitializeClient(
+        
 
         /// <summary>
         /// Listens for clients and starts threads to handle them.
@@ -159,6 +158,10 @@ namespace GMLoggerBackend
 
             // Signal the calling thread to continue.
             tcpClientConnected.Set();
+
+            TCPListener.BeginAcceptTcpClient(
+                new AsyncCallback(DoAcceptTcpClientCallback),
+                TCPListener);
         }
     }
 }
