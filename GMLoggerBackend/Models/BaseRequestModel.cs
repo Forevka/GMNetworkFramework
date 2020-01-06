@@ -22,7 +22,7 @@ namespace GMLoggerBackend.Models
 
     public class BaseRequestModel
     {
-        private BufferStream _buffer { get; set; }
+        private BufferStream Buffer { get; set; }
 
         public ushort Flag { get; set; } = 0;
 
@@ -31,7 +31,7 @@ namespace GMLoggerBackend.Models
         public static BaseRequestModel FromStream(BufferStream buffer)
         {
             var m = new BaseRequestModel();
-            m._buffer = buffer.CloneBufferStream();
+            m.Buffer = buffer.CloneBufferStream();
 
             return m;
         }
@@ -40,7 +40,7 @@ namespace GMLoggerBackend.Models
         {
             T new_model = new T();
 
-            new_model._buffer = _buffer.CloneBufferStream();
+            new_model.Buffer = Buffer.CloneBufferStream();
             new_model.ParseBuffer();
 
             return new_model;
@@ -50,7 +50,7 @@ namespace GMLoggerBackend.Models
         public void ParseFlag()
         {
             ushort _flag;
-            _buffer.Read(out _flag);
+            Buffer.Read(out _flag);
             Flag = _flag;
         }
 
@@ -82,10 +82,33 @@ namespace GMLoggerBackend.Models
             {
                 Type prop_type = prop.Value.PropertyType;
                 Console.WriteLine(prop_type.Name);
-                if (prop_type.Name == "String")
+                if (prop_type == typeof(string))
                 {
-                    String val;
-                    _buffer.Read(out val);
+                    string val;
+                    Buffer.Read(out val);
+                    prop.Value.SetValue(this, val);
+                }else if (prop_type == typeof(int))
+                {
+                    int val;
+                    Buffer.Read(out val);
+                    prop.Value.SetValue(this, val);
+                }
+                else if (prop_type == typeof(bool))
+                {
+                    bool val;
+                    Buffer.Read(out val);
+                    prop.Value.SetValue(this, val);
+                }
+                else if (prop_type == typeof(double))
+                {
+                    double val;
+                    Buffer.Read(out val);
+                    prop.Value.SetValue(this, val);
+                }
+                else if (prop_type == typeof(float))
+                {
+                    float val;
+                    Buffer.Read(out val);
                     prop.Value.SetValue(this, val);
                 }
             }

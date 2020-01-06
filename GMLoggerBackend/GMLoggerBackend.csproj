@@ -50,6 +50,7 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Handlers\HandlerLog.cs" />
     <Compile Include="Handlers\HandlerPing.cs" />
+    <Compile Include="Handlers\HandlerPing3s.cs" />
     <Compile Include="Handlers\HandlerUndefine.cs" />
     <Compile Include="Handlers\IHandler.cs" />
     <Compile Include="Handlers\HandlerNewConnection.cs" />
@@ -58,7 +59,9 @@
     <Compile Include="Models\BaseResponseModel.cs" />
     <Compile Include="Models\Request\LogModelRequest.cs" />
     <Compile Include="Models\Request\NewConnectionModelRequest.cs" />
+    <Compile Include="Models\Request\PingModelRequest.cs" />
     <Compile Include="Models\Response\PingModelResponse.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />

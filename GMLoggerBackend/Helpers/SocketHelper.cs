@@ -24,12 +24,7 @@ namespace GMLoggerBackend.Helpers
         public Thread AbortThread;
         public TcpClient MscClient;
         public Server ParentServer;
-        public string ClientIPAddress;
-        public string ClientName;
-        public string ClientRace;
-        public int ClientNumber;
-        public bool IsSearching;
-        public bool IsIngame;
+        public UserModel Me;
 
         /// <summary>
         /// Starts the given client in two threads for reading and writing.
@@ -80,7 +75,7 @@ namespace GMLoggerBackend.Helpers
         public void DisconnectClient()
         {
             //Console Message.
-            Console.WriteLine("Disconnecting: " + this.ClientIPAddress);
+            Console.WriteLine("Disconnecting: " + this.Me.IpAddress + " Name: " + this.Me.Name);
 
             //Removes client from server.
             ParentServer.Clients.Remove(this);
@@ -107,7 +102,7 @@ namespace GMLoggerBackend.Helpers
             Console.WriteLine("Read thread aborted on client.");
             WriteThread.Abort();
             Console.WriteLine("Write thread aborted on client.");
-            Console.WriteLine(ClientIPAddress + " disconnected.");
+            Console.WriteLine(Me.IpAddress + " disconnected.");
             Console.WriteLine(Convert.ToString(ParentServer.Clients.Count) + " clients online.");
             AbortThread.Abort();
         }
@@ -178,7 +173,7 @@ namespace GMLoggerBackend.Helpers
                         hList.ForEach(x => {
                             try
                             {
-                                x.Process(model, readBuffer, this, data);
+                                x.Process(model, this.Me, this, data);
                             }
                             catch (CancelHandlerException)
                             {

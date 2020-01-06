@@ -11,12 +11,14 @@ namespace GMLoggerBackend.Handlers
 {
     class HandlerNewConnection : IHandler
     {
-        public Dictionary<string, string> Process(BaseRequestModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseRequestModel model, UserModel user, SocketHelper mySocket, Dictionary<string, string> data)
         {
             var thisModel = model.ToModel<NewConnectionModelRequest>();
 
             //Update client information.
-            mySocket.ClientIPAddress = thisModel.Ip;
+            user.IpAddress = thisModel.Ip;
+            user.Name = thisModel.Name;
+            user.Guid = new Guid();
 
             //Console Message.
             Console.WriteLine(thisModel.Ip + $" connected. Name: {thisModel.Name}");

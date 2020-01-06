@@ -12,6 +12,7 @@
     <script>scripts\client_raw_send_connection.gml</script>
     <script>scripts\client_raw_send_ping.gml</script>
     <script>scripts\client_raw_send_log.gml</script>
+    <script>scripts\unix_timestamp.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_system</object>

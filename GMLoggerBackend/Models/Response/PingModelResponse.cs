@@ -10,5 +10,8 @@ namespace GMLoggerBackend.Models.Response
     {
         [Position(0)]
         public string msg { get; set; }
+
+        [Position(1)]
+        public float ping { get; set; }
     }
 }

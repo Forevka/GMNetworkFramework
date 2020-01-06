@@ -61,7 +61,7 @@ network_connect_raw(socket, "127.0.0.1", 10103);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>client_raw_send_ping()
+            <string>//client_raw_send_ping()
 </string>
           </argument>
         </arguments>
@@ -174,7 +174,9 @@ if (socket_id = socket)
                     ping = ping_step;
                     alarm[0] = 1 * room_speed * 0.5//room_seconds(1); //Send again in 1 second.
                     var msg = buffer_read(read_buffer, buffer_string);
+                    var test_float = buffer_read(read_buffer, buffer_f32);
                     show_debug_message("received ping " + msg)
+                    show_debug_message(test_float)
                     break;
                 }
            

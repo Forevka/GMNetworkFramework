@@ -63,11 +63,26 @@ namespace GMLoggerBackend.Models
             {
                 Type prop_type = prop.Value.PropertyType;
                 Console.WriteLine(prop_type.Name);
-                if (prop_type.Name == "String")
+                if (prop_type == typeof(string))
                 {
                     _buffer.Write((string)prop.Value.GetValue(this));
                 }
-                
+                else if (prop_type == typeof(int))
+                {
+                    _buffer.Write((int)prop.Value.GetValue(this));
+                }
+                else if (prop_type == typeof(bool))
+                {
+                    _buffer.Write((bool)prop.Value.GetValue(this));
+                }
+                else if (prop_type == typeof(double))
+                {
+                    _buffer.Write((double)prop.Value.GetValue(this));
+                }
+                else if (prop_type == typeof(float))
+                {
+                    _buffer.Write((float)prop.Value.GetValue(this));
+                }
             }
         }
 

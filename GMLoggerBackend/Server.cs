@@ -124,6 +124,7 @@ namespace GMLoggerBackend
                 TcpClient tcpClient = TCPListener.AcceptTcpClient();
                 Console.WriteLine("New client detected. Connecting client.");
                 SocketHelper helper = new SocketHelper();
+                helper.Me = new Models.UserModel();
                 helper.StartClient(tcpClient, this);
                 Clients.Add(helper);
             }

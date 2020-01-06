@@ -24,7 +24,7 @@ namespace GMLoggerBackend
             server.RegisterHandler(RequestFlag.NewConnection, new HandlerNewConnection());
 
             server.RegisterHandler(RequestFlag.Ping, new HandlerPing());
-            server.RegisterHandler(RequestFlag.PingResponse, new HandlerPing());
+            server.RegisterHandler(RequestFlag.PingResponse, new HandlerPing3s());
 
             server.StartServer(10103);
             Console.WriteLine("Server Started!");
