@@ -13,11 +13,9 @@ namespace GMLoggerBackend.Handlers
     {
         public Dictionary<string, string> Process(BaseModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
         {
-            //var model = new LogModelRequest();
-            //model.FromBuffer(buffer);
-            //Console.WriteLine(model.msg);
+            var this_model = model.ToModel<LogModelRequest>();
+            Console.WriteLine(this_model.msg);
             return data;
-
         }
     }
 }
