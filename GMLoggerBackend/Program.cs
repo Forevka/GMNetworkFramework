@@ -18,6 +18,7 @@ namespace GMLoggerBackend
             Console.WriteLine("Starting Server...");
             Server server = new Server();
 
+            server.RegisterHandler(RequestFlag.Log, new HandlerLog());
             server.RegisterHandler(RequestFlag.Undefined, new HandlerUndefine());
 
             server.RegisterHandler(RequestFlag.NewConnection, new HandlerNewConnection());
