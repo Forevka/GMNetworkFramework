@@ -46,11 +46,13 @@
     <Compile Include="BufferStream.cs" />
     <Compile Include="Enum\RequestFlag.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Handlers\HandlerLog.cs" />
     <Compile Include="Handlers\HandlerPing.cs" />
     <Compile Include="Handlers\HandlerUndefine.cs" />
     <Compile Include="Handlers\IHandler.cs" />
     <Compile Include="Handlers\HandlerNewConnection.cs" />
     <Compile Include="Helpers\SocketHelper.cs" />
+    <Compile Include="Models\Request\LogModelRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
