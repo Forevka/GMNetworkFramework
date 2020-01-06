@@ -53,8 +53,8 @@
     <Compile Include="Handlers\HandlerNewConnection.cs" />
     <Compile Include="Helpers\SocketHelper.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\NewConnectionModelRequest.cs" />
     <Compile Include="Models\Request\LogModelRequest.cs" />
+    <Compile Include="Models\Request\NewConnectionModelRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
