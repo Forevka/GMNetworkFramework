@@ -27,8 +27,9 @@
             <kind>1</kind>
             <string>global.connected_to_server = false;
 global.ip_address = "192.168.0.1";
+global.players_online = 0
 
-socket  = network_create_socket(network_socket_tcp);
+socket = network_create_socket(network_socket_tcp);
 
 ping = 0;
 ping_step = 0;
@@ -39,6 +40,57 @@ network_set_timeout(socket, 2000, 2000);
 network_set_config(network_config_use_non_blocking_socket, 1);
 
 network_connect_raw(socket, "127.0.0.1", 10103);
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>global.network_proccesing_functions = ds_map_create()
+
+network_register_handler(1050, network_ping_handler)
+network_register_handler(1007, network_receive_ping_handler)
+network_register_handler(1008, network_receive_players_online_handler)
+network_register_handler(1009, network_receive_disconnect_handler)
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>network_destroy(self.socket);
 </string>
           </argument>
         </arguments>
@@ -84,7 +136,11 @@ network_connect_raw(socket, "127.0.0.1", 10103);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (keyboard_check_pressed(vk_enter)){var msg = get_string("", ""); client_raw_send_log(msg)}
+            <string>if (keyboard_check_pressed(vk_enter))
+{
+    var msg = get_string("", ""); 
+    client_raw_send_log(msg);
+}
 
 </string>
           </argument>
@@ -124,38 +180,12 @@ if (socket_id = socket)
         //Connect Event.
         case network_type_non_blocking_connect:
         {
-            show_debug_message("CONNECTED!")
-            var success = ds_map_find_value(async_load, "succeeded");
-            if (success = 0)
-            {            
-                //Failure connection. Retry.
-                global.connected_to_server = false;
-            }
-            else
-            {
-                //Succesful connection.
-                global.connected_to_server = true;
-                client_raw_send_connection();
-                client_raw_send_ping();
-            }
+            network_system_raw_connected();
             break;
         }
         case network_type_connect:
         {
-            show_debug_message("CONNECTED!")
-            var success = ds_map_find_value(async_load, "succeeded");
-            if (success = 0)
-            {            
-                //Failure connection. Retry.
-                global.connected_to_server = false;
-            }
-            else
-            {
-                //Succesful connection.
-                global.connected_to_server = true;
-                client_raw_send_connection();
-                client_raw_send_ping();
-            }
+            network_system_raw_connected();
             break;
         }
    
@@ -165,57 +195,16 @@ if (socket_id = socket)
             //Get the packet from the server.
             var read_buffer = ds_map_find_value(async_load, "buffer");
             var constant = buffer_read(read_buffer, buffer_u16);
-            switch (constant)
-            {
-                // 1050 = Recive Ping
-                case 1050:
-                {            
-                    //Update variables.
-                    ping = ping_step;
-                    alarm[0] = 1 * room_speed * 0.5//room_seconds(1); //Send again in 1 second.
-                    var msg = buffer_read(read_buffer, buffer_string);
-                    var test_float = buffer_read(read_buffer, buffer_f32);
-                    show_debug_message("received ping " + msg)
-                    show_debug_message(test_float)
-                    break;
-                }
-           
-                // 1007 = Recive Server Ping
-                case 1007:
-                {            
-                    //Create buffer.
-                    var buffer = buffer_create(128, buffer_grow, 1);
-                    buffer_seek(buffer, buffer_seek_start, 0);
-                    buffer_write(buffer , buffer_u16, 2005);
-               
-                    //Return ping to client.
-                    network_send_raw(socket, buffer, buffer_tell(buffer));
-                    buffer_delete(buffer);
-                    break;
-                }
-
-                // 1008 = Recive Players Online
-                case 1008:
-                {            
-                    //Recive player online data.
-                    var players_online = buffer_read(read_buffer, buffer_s32);
-               
-                    //Update global.
-                    global.players_online = players_online;
-                    break;
-                }
-           
-                // 1009 = Disconnected From Server
-                case 1009:
-                {
-                    //Returns to main menu.
-                    //event_user_ext(ctr_multiplayer, 0);
-                    //room_goto(rm_mainmenu);
-                    break;
-                }      
-            }
-       
+            
+            network_invoke_handler(self, constant, read_buffer)
+            
             //Breaks
+            break;
+        }
+        
+        case network_type_disconnect:
+        {
+            network_system_raw_disconnect()
             break;
         }
     }
@@ -243,6 +232,7 @@ if (socket_id = socket)
           <argument>
             <kind>1</kind>
             <string>draw_text(20, 20, global.connected_to_server)
+draw_text(20, 36, global.players_online)
 </string>
           </argument>
         </arguments>

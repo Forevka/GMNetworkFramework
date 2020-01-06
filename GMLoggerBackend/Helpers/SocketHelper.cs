@@ -50,6 +50,17 @@ namespace GMLoggerBackend.Helpers
             Console.WriteLine("Client write thread started.");
         }
 
+        public void SendMessageToAll(BufferStream buffer)
+        {
+            ParentServer.SendToAllClients(buffer);
+        }
+
+        public void SendMessageToAll(BaseResponseModel model)
+        {
+            model.ComposeBuffer();
+            ParentServer.SendToAllClients(model._buffer);
+        }
+
         /// <summary>
         /// Sends a string message to the client. This message is added to the write queue and send
         /// once it is it's turn. This ensures all messages are send in order they are given.
@@ -76,6 +87,26 @@ namespace GMLoggerBackend.Helpers
             //Removes client from server.
             ParentServer.Clients.Remove(this);
 
+            //Call Handlers for disconect user
+            BaseRequestModel model = new BaseRequestModel();
+            model.Flag = (ushort)Enums.RequestFlag.Disconnect;
+
+            List<IHandler> hList = null;
+
+            Dictionary<string, string> data = new Dictionary<string, string>();
+
+            if (ParentServer.Handlers.TryGetValue(model.requestFlag, out hList))
+                hList.ForEach(x => {
+                    try
+                    {
+                        x.Process(model, this.Me, this, data);
+                    }
+                    catch (CancelHandlerException)
+                    {
+                        //dont do anything
+                    }
+                });
+            //////
             //Closes Stream.
             MscClient.Close();
 

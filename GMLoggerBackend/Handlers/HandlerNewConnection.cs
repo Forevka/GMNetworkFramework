@@ -1,6 +1,8 @@
-﻿using GMLoggerBackend.Helpers;
+﻿using GMLoggerBackend.Enum;
+using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Models;
 using GMLoggerBackend.Models.Request;
+using GMLoggerBackend.Models.Response;
 using System;
 using System.Collections.Generic;
 
@@ -20,6 +22,11 @@ namespace GMLoggerBackend.Handlers
             //Console Message.
             Console.WriteLine(thisModel.Ip + $" connected. Name: {thisModel.Name}");
             Console.WriteLine(Convert.ToString(mySocket.ParentServer.Clients.Count) + " clients online.");
+
+            var resp = BaseResponseModel.Model<PlayersCountModelResponse>(ResponseFlag.PlayersCount);
+            resp.Count = mySocket.ParentServer.Clients.Count;
+
+            mySocket.SendMessageToAll(resp);
 
             return data;
         }

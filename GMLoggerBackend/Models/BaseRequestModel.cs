@@ -56,8 +56,7 @@ namespace GMLoggerBackend.Models
                 foreach (System.Attribute attr in attrs)
                 {
                     Position p = (Position)attr;
-                    //Console.WriteLine(prop.Name);
-                    //Console.WriteLine(p.pos);
+
                     thisProps.Add(p.pos, prop);
                 }
             }
@@ -71,7 +70,8 @@ namespace GMLoggerBackend.Models
                     string val;
                     Buffer.Read(out val);
                     prop.Value.SetValue(this, val);
-                }else if (prop_type == typeof(int))
+                }
+                else if (prop_type == typeof(int))
                 {
                     int val;
                     Buffer.Read(out val);
@@ -95,7 +95,7 @@ namespace GMLoggerBackend.Models
                     Buffer.Read(out val);
                     prop.Value.SetValue(this, val);
                 }
-            }
+            }      
         }
     }
 }
