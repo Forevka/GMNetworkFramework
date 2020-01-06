@@ -1,5 +1,7 @@
-﻿using GMLoggerBackend.Helpers;
+﻿using GMLoggerBackend.Enum;
+using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Models;
+using GMLoggerBackend.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +12,13 @@ namespace GMLoggerBackend.Handlers
 {
     class HandlerPing : IHandler
     {
-        public Dictionary<string, string> Process(BaseModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseRequestModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
         {
             //Send ping return to client.
-            BufferStream responseBuffer = new BufferStream(Server.BufferSize, Server.BufferAlignment);
-            responseBuffer.Seek(0);
-            UInt16 constant_out = 1050;
-            responseBuffer.Write(constant_out);
+            var responseModel = BaseResponseModel.Model<PingModelResponse>(ResponseFlag.Ping);
 
             Console.WriteLine($"Received ping from {mySocket.ClientIPAddress}");
-            mySocket.SendMessage(responseBuffer);
+            mySocket.SendMessage(responseModel);
 
             return data;
         }

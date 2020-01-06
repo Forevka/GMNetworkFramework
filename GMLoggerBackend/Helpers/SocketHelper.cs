@@ -9,6 +9,7 @@ using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Enums;
 using GMLoggerBackend.Exceptions;
 using GMLoggerBackend.Models;
+using GMLoggerBackend.Enum;
 
 namespace GMLoggerBackend.Helpers
 {
@@ -37,8 +38,8 @@ namespace GMLoggerBackend.Helpers
         {
             //Sets client variable.
             MscClient = client;
-            MscClient.SendBufferSize = Server.BufferSize;
-            MscClient.ReceiveBufferSize = Server.BufferSize;
+            MscClient.SendBufferSize = (int)BufferType.BufferSize;
+            MscClient.ReceiveBufferSize = (int)BufferType.BufferSize;
             ParentServer = server;
 
             //Starts a read thread.
@@ -65,6 +66,11 @@ namespace GMLoggerBackend.Helpers
         public void SendMessage(BufferStream buffer)
         {
             WriteQueue.Enqueue(buffer);
+        }
+
+        public void SendMessage(BaseResponseModel model)
+        {
+            WriteQueue.Enqueue(model._buffer);
         }
 
         /// <summary>
@@ -155,12 +161,12 @@ namespace GMLoggerBackend.Helpers
                 try
                 {
                     Thread.Sleep(10);
-                    BufferStream readBuffer = new BufferStream(Server.BufferSize, 1);
+                    BufferStream readBuffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
                     NetworkStream stream = client.GetStream();
-                    stream.Read(readBuffer.Memory, 0, Server.BufferSize);
+                    stream.Read(readBuffer.Memory, 0, (int)BufferType.BufferSize);
 
                     //Read the header data.
-                    BaseModel model = BaseModel.FromStream(readBuffer);
+                    BaseRequestModel model = BaseRequestModel.FromStream(readBuffer);
                     model.ParseFlag();
 
                     List<IHandler> hList = null;

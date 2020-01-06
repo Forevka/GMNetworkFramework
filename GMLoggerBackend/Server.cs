@@ -8,6 +8,7 @@ using System.Threading;
 using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Enums;
+using GMLoggerBackend.Enum;
 
 namespace GMLoggerBackend
 {
@@ -20,10 +21,6 @@ namespace GMLoggerBackend
         public Thread MatchmakingThread;
         public TcpListener TCPListener = null;
         public Dictionary<RequestFlag, List<IHandler>> Handlers = new Dictionary<RequestFlag, List<IHandler>>();
-
-        public static int BufferAlignment = 1;
-        public static int BufferSize = 256;
-
 
         public void RegisterHandler(RequestFlag flag, IHandler handler)
         {
@@ -94,7 +91,7 @@ namespace GMLoggerBackend
             while (true)
             {
                 Thread.Sleep(3000);
-                BufferStream buffer = new BufferStream(BufferSize, BufferAlignment);
+                BufferStream buffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
                 buffer.Seek(0);
                 ushort constant_out = 1007;
                 buffer.Write(constant_out);

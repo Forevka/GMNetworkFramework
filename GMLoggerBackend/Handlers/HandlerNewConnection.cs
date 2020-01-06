@@ -11,7 +11,7 @@ namespace GMLoggerBackend.Handlers
 {
     class HandlerNewConnection : IHandler
     {
-        public Dictionary<string, string> Process(BaseModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseRequestModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
         {
             var thisModel = model.ToModel<NewConnectionModelRequest>();
 

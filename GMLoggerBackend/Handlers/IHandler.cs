@@ -10,6 +10,6 @@ namespace GMLoggerBackend.Handlers
 {
     public interface IHandler
     {
-        Dictionary<string, string> Process(BaseModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data);
+        Dictionary<string, string> Process(BaseRequestModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data);
     }
 }

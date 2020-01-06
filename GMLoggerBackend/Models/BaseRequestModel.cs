@@ -20,24 +20,23 @@ namespace GMLoggerBackend.Models
     }
     
 
-    public class BaseModel
+    public class BaseRequestModel
     {
-        //[Position(0)]
         private BufferStream _buffer { get; set; }
 
         public ushort Flag { get; set; } = 0;
 
         public RequestFlag requestFlag { get { return (RequestFlag)Flag; }  }
         
-        public static BaseModel FromStream(BufferStream buffer)
+        public static BaseRequestModel FromStream(BufferStream buffer)
         {
-            var m = new BaseModel();
+            var m = new BaseRequestModel();
             m._buffer = buffer.CloneBufferStream();
 
             return m;
         }
 
-        public T ToModel<T>() where T: BaseModel, new()
+        public T ToModel<T>() where T: BaseRequestModel, new()
         {
             T new_model = new T();
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GMLoggerBackend.Models.Request
 {
-    public class NewConnectionModelRequest : BaseModel
+    public class NewConnectionModelRequest : BaseRequestModel
     {
         [Position(0)]
         public string Ip { get; set; }

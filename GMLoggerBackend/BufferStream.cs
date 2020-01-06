@@ -4,6 +4,7 @@ using Encoding = System.Text.Encoding;
 using StringBuilder = System.Text.StringBuilder;
 using BitConverter = System.BitConverter;
 using Array = System.Array;
+using GMLoggerBackend.Enum;
 
 namespace GMLoggerBackend
 {
@@ -52,6 +53,21 @@ namespace GMLoggerBackend
             this.length = length;
             this.alignment = alignment;
             memory = new byte[AlignedIterator(length, alignment)];
+            iterator = 0;
+        }
+
+        /// <summary>
+        /// Instantiates an instance of the BufferStream class with the specified stream length and alignment.
+        /// </summary>
+        /// <param name="length">Length of the BufferStream in bytes.</param>
+        /// <param name="alignment">Alignment of the BufferStream in bytes.</param>
+        public BufferStream(BufferType length, BufferType alignment)
+        {
+            fastAlign = (int)alignment - 1;
+            fastAlignNot = ~fastAlign;
+            this.length = (int)length;
+            this.alignment = (int)alignment;
+            memory = new byte[AlignedIterator((int)length, (int)alignment)];
             iterator = 0;
         }
 

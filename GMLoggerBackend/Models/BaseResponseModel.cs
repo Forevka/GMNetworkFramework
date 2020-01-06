@@ -1,0 +1,148 @@
+﻿using GMLoggerBackend.Enum;
+using GMLoggerBackend.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GMLoggerBackend.Models
+{
+    public class BaseResponseModel
+    {
+        public BufferStream _buffer { get; set; }
+
+        public ushort Flag { get; set; } = 0;
+
+        public RequestFlag requestFlag { get { return (RequestFlag)Flag; } }
+
+        public static T Model<T>(ushort _flag) where T : BaseResponseModel, new()
+        {
+            T new_model = new T();
+
+            new_model.Flag = _flag;
+
+            new_model._buffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
+            new_model._buffer.Seek(0);
+
+            new_model.Write(_flag);
+
+            return new_model;
+        }
+
+        public static T Model<T>(ResponseFlag _flag) where T : BaseResponseModel, new()
+        {
+            return Model<T>((ushort)_flag);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">BOOLEAN value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(bool value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">BYTE value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(byte value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">SBYTE value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(sbyte value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">USHORT value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(ushort value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">SHORT value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(short value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">UINT value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(uint value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">INT value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(int value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">FLOAT value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(float value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">DOUBLE value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(double value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">STRING value to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(string value)
+        {
+            this._buffer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a value of the specified type to this model.
+        /// </summary>
+        /// <param name="value">BYTE[] array to be written.</param>
+        /// <exception cref="System.IndexOutOfRangeException"/>
+        public void Write(byte[] value)
+        {
+            this._buffer.Write(value);
+        }
+    }
+}

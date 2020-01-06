@@ -10,7 +10,7 @@ namespace GMLoggerBackend.Handlers
 {
     class HandlerUndefine : IHandler
     {
-        public Dictionary<string, string> Process(BaseModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseRequestModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
         {
 
             return data;
