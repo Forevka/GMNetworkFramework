@@ -15,12 +15,12 @@ namespace GMLoggerBackend.Handlers
             var thisModel = model.ToModel<NewConnectionModelRequest>();
 
             //Update client information.
-            user.IpAddress = thisModel.Ip;
+            user.IpAddress = mySocket.MscClient.Client.RemoteEndPoint.ToString();
             user.Name = thisModel.Name;
             user.Guid = new Guid();
 
             //Console Message.
-            Console.WriteLine(thisModel.Ip + $" connected. Name: {thisModel.Name}");
+            Console.WriteLine(user.IpAddress + $" connected. Name: {thisModel.Name}");
             Console.WriteLine(Convert.ToString(mySocket.ParentServer.Clients.Count) + " clients online.");
 
             var resp = BaseResponseModel.Model<PlayersCountModelResponse>(ResponseFlag.PlayersCount);
