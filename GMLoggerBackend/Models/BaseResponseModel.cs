@@ -3,6 +3,7 @@ using GMLoggerBackend.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,41 @@ namespace GMLoggerBackend.Models
         public static T Model<T>(ResponseFlag _flag) where T : BaseResponseModel, new()
         {
             return Model<T>((ushort)_flag);
+        }
+
+        public void ComposeBuffer()
+        {
+            List<Position> positions = new List<Position>();
+
+            var props = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+
+            var thisProps = new Dictionary<int, PropertyInfo>();
+
+            foreach (var prop in props)
+            {
+                System.Attribute[] attrs = System.Attribute.GetCustomAttributes(prop);
+                // Displaying output.  
+                foreach (System.Attribute attr in attrs)
+                {
+                    if (attr is Position)
+                    {
+                        Position p = (Position)attr;
+
+                        thisProps.Add(p.pos, prop);
+                    }
+                }
+            }
+
+            foreach (var prop in thisProps.OrderBy(x => x.Key))
+            {
+                Type prop_type = prop.Value.PropertyType;
+                Console.WriteLine(prop_type.Name);
+                if (prop_type.Name == "String")
+                {
+                    _buffer.Write((string)prop.Value.GetValue(this));
+                }
+                
+            }
         }
 
         /// <summary>

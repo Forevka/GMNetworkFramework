@@ -16,6 +16,7 @@ namespace GMLoggerBackend.Handlers
         {
             //Send ping return to client.
             var responseModel = BaseResponseModel.Model<PingModelResponse>(ResponseFlag.Ping);
+            responseModel.msg = "abrakadabra";
 
             Console.WriteLine($"Received ping from {mySocket.ClientIPAddress}");
             mySocket.SendMessage(responseModel);

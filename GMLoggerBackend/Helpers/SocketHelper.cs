@@ -70,6 +70,7 @@ namespace GMLoggerBackend.Helpers
 
         public void SendMessage(BaseResponseModel model)
         {
+            model.ComposeBuffer();
             WriteQueue.Enqueue(model._buffer);
         }
 

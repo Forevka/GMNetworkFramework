@@ -36,7 +36,7 @@ ping_timeout = 1 * room_speed * 1
 
 //Set config.
 network_set_timeout(socket, 2000, 2000);
-//network_set_config(network_config_use_non_blocking_socket, 1);
+network_set_config(network_config_use_non_blocking_socket, 1);
 
 network_connect_raw(socket, "127.0.0.1", 10103);
 </string>
@@ -173,7 +173,8 @@ if (socket_id = socket)
                     //Update variables.
                     ping = ping_step;
                     alarm[0] = 1 * room_speed * 0.5//room_seconds(1); //Send again in 1 second.
-                    show_debug_message("received ping")
+                    var msg = buffer_read(read_buffer, buffer_string);
+                    show_debug_message("received ping " + msg)
                     break;
                 }
            
