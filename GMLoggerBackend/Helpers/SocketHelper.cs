@@ -8,6 +8,7 @@ using System.Threading;
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Enums;
 using GMLoggerBackend.Exceptions;
+using GMLoggerBackend.Models;
 
 namespace GMLoggerBackend.Helpers
 {
@@ -159,19 +160,18 @@ namespace GMLoggerBackend.Helpers
                     stream.Read(readBuffer.Memory, 0, Server.BufferSize);
 
                     //Read the header data.
-                    ushort constant;
-                    readBuffer.Read(out constant);
-                    
+                    BaseModel model = BaseModel.FromStream(readBuffer);
+                    model.ParseFlag();
 
                     List<IHandler> hList = null;
 
                     Dictionary<string, string> data = new Dictionary<string, string>();
 
-                    if (ParentServer.Handlers.TryGetValue((RequestFlag)constant, out hList))
+                    if (ParentServer.Handlers.TryGetValue(model.requestFlag, out hList))
                         hList.ForEach(x => {
                             try
                             {
-                                x.Process(readBuffer, this, data);
+                                x.Process(model, readBuffer, this, data);
                             }
                             catch (CancelHandlerException)
                             {
@@ -180,7 +180,7 @@ namespace GMLoggerBackend.Helpers
                         });
                     else
                     {
-                        Console.WriteLine($"!!! WARNING !!! NO HANDLERS FOR {constant}");
+                        Console.WriteLine($"!!! WARNING !!! NO HANDLERS FOR {model.requestFlag}");
                     }
 
                 }

@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GMLoggerBackend.Helpers;
+using GMLoggerBackend.Models;
 
 namespace GMLoggerBackend.Handlers
 {
     class HandlerNewConnection : IHandler
     {
-        public Dictionary<string, string> Process(BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
         {
-            String ip;
-            buffer.Read(out ip);
+            var thisModel = model.ToModel<NewConnectionModelRequest>();
 
             //Update client information.
-            mySocket.ClientIPAddress = ip;
+            mySocket.ClientIPAddress = thisModel.Ip;
 
             //Console Message.
-            Console.WriteLine(ip + $" connected. IP: {ip}");
+            Console.WriteLine(thisModel.Ip + $" connected. Name: {thisModel.Name}");
             Console.WriteLine(Convert.ToString(mySocket.ParentServer.Clients.Count) + " clients online.");
 
             return data;

@@ -1,5 +1,6 @@
 ﻿using GMLoggerBackend.Enums;
 using GMLoggerBackend.Handlers;
+using GMLoggerBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
 ﻿using GMLoggerBackend.Helpers;
+using GMLoggerBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace GMLoggerBackend.Handlers
 {
     class HandlerPing : IHandler
     {
-        public Dictionary<string, string> Process(BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseModel model, BufferStream buffer, SocketHelper mySocket, Dictionary<string, string> data)
         {
             //Send ping return to client.
             BufferStream responseBuffer = new BufferStream(Server.BufferSize, Server.BufferAlignment);
