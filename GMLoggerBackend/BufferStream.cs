@@ -1,4 +1,4 @@
-﻿using GMLoggerBackend.Enum;
+﻿using GMLoggerBackend.Enums;
 using System.Runtime.CompilerServices;
 using Array = System.Array;
 using BitConverter = System.BitConverter;

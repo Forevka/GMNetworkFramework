@@ -1,4 +1,4 @@
-﻿using GMLoggerBackend.Enum;
+﻿using GMLoggerBackend.Enums;
 using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Models;
 using GMLoggerBackend.Models.Request;

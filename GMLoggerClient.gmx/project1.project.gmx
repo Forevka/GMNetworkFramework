@@ -17,13 +17,13 @@
     <script>scripts\unix_timestamp.gml</script>
     <scripts name="network_handlers">
       <script>scripts\network_ping_handler.gml</script>
+      <script>scripts\network_receive_disconnect_handler.gml</script>
       <script>scripts\network_receive_ping_handler.gml</script>
       <script>scripts\network_receive_players_online_handler.gml</script>
-      <script>scripts\network_receive_disconnect_handler.gml</script>
       <scripts name="system">
-        <script>scripts\network_system_raw_connected.gml</script>
         <script>scripts\network_invoke_handler.gml</script>
         <script>scripts\network_register_handler.gml</script>
+        <script>scripts\network_system_raw_connected.gml</script>
         <script>scripts\network_system_raw_disconnect.gml</script>
       </scripts>
     </scripts>

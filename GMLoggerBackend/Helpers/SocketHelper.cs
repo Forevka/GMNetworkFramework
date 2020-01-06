@@ -1,7 +1,8 @@
-﻿using GMLoggerBackend.Enum;
+﻿using GMLoggerBackend.Enums;
 using GMLoggerBackend.Exceptions;
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Models;
+using GMLoggerBackend.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -82,31 +83,19 @@ namespace GMLoggerBackend.Helpers
         public void DisconnectClient()
         {
             //Console Message.
-            Console.WriteLine("Disconnecting: " + this.Me.IpAddress + " Name: " + this.Me.Name);
+            Console.WriteLine("Disconnecting: " + Me.IpAddress + " Name: " + Me.Name);
 
             //Removes client from server.
             ParentServer.Clients.Remove(this);
 
             //Call Handlers for disconect user
-            BaseRequestModel model = new BaseRequestModel();
-            model.Flag = (ushort)Enums.RequestFlag.Disconnect;
+            BaseRequestModel model = new BaseRequestModel
+            {
+                Flag = (ushort)Enums.RequestFlag.Disconnect
+            };
 
-            List<IHandler> hList = null;
+            InvokeHandlers(model);
 
-            Dictionary<string, string> data = new Dictionary<string, string>();
-
-            if (ParentServer.Handlers.TryGetValue(model.requestFlag, out hList))
-                hList.ForEach(x => {
-                    try
-                    {
-                        x.Process(model, this.Me, this, data);
-                    }
-                    catch (CancelHandlerException)
-                    {
-                        //dont do anything
-                    }
-                });
-            //////
             //Closes Stream.
             MscClient.Close();
 
@@ -192,26 +181,7 @@ namespace GMLoggerBackend.Helpers
                     BaseRequestModel model = BaseRequestModel.FromStream(readBuffer);
                     model.ParseFlag();
 
-                    List<IHandler> hList = null;
-
-                    Dictionary<string, string> data = new Dictionary<string, string>();
-
-                    if (ParentServer.Handlers.TryGetValue(model.requestFlag, out hList))
-                        hList.ForEach(x => {
-                            try
-                            {
-                                x.Process(model, this.Me, this, data);
-                            }
-                            catch (CancelHandlerException)
-                            {
-                                //dont do anything
-                            }
-                        });
-                    else
-                    {
-                        Console.WriteLine($"!!! WARNING !!! NO HANDLERS FOR {model.requestFlag}");
-                    }
-
+                    InvokeHandlers(model);
                 }
                 catch (System.IO.IOException)
                 {
@@ -230,5 +200,46 @@ namespace GMLoggerBackend.Helpers
                 }
             }
         }
+
+        private void InvokeHandlers(BaseRequestModel model)
+        {
+            List<IHandler> hList = null;
+
+            Dictionary<string, string> data = new Dictionary<string, string>();
+
+            if (ParentServer.Handlers.TryGetValue(model.requestFlag, out hList))
+            {
+                bool isStop = false;
+                hList.ForEach(x =>
+                {
+                    try
+                    {
+                        if (!isStop)
+                        {
+                            x.Process(model, this.Me, this, data);
+                        }
+                    }
+                    catch (CancelHandlerException)
+                    {
+                        Logger.Debug($"{x.GetType().Name} skipped");
+                    }
+                    catch (StopProcessingException)
+                    {
+                        isStop = true;
+                        Logger.Debug($"Invoking handlers stopped by {x.GetType().Name}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, "Error while invoking handlers");
+                    }
+                });
+            }
+            else
+            {
+                var unhandled = new Unhandled();
+                unhandled.Process(model, this.Me, this, data);
+            }
+        }
+
     }
 }

@@ -1,5 +1,7 @@
 ﻿using GMLoggerBackend.Enums;
 using GMLoggerBackend.Handlers;
+using GMLoggerBackend.Utils;
+using NLog.Fluent;
 using System;
 
 namespace GMLoggerBackend
@@ -8,9 +10,11 @@ namespace GMLoggerBackend
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Configuring Logger");
+            Logger.Config();
             Console.WriteLine("Starting Server...");
             Server server = new Server();
-            
+            Logger.Debug($"Started at {DateTime.UtcNow}");
             server.RegisterHandler(RequestFlag.Undefined, new HandlerUndefine());
             server.RegisterHandler(RequestFlag.Disconnect, new HandlerDisconnect());
 

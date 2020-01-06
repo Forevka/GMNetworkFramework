@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GMLoggerBackend.Enums;
 using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Models;
-using GMLoggerBackend.Models.Response;
 
 namespace GMLoggerBackend.Handlers
 {
-    class HandlerDisconnect : IHandler
+    class Unhandled : IHandler
     {
         public Dictionary<string, string> Process(BaseRequestModel model, UserModel user, SocketHelper mySocket, Dictionary<string, string> data)
         {
-            var resp = BaseResponseModel.Model<PlayersCountModelResponse>(ResponseFlag.PlayersCount);
-            resp.Count = mySocket.ParentServer.Clients.Count;
-
-            mySocket.SendMessageToAll(resp);
-
+            Console.WriteLine($"Unhandled event {model.Flag} from user {user.Guid}");
             return data;
         }
     }

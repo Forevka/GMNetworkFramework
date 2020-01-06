@@ -1,4 +1,5 @@
 ﻿using GMLoggerBackend.Enums;
+using GMLoggerBackend.Utils;
 using GMLoggerBackend.Utils.Attributes;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Reflection;
 
 namespace GMLoggerBackend.Models
 {
-    public class BaseRequestModel
+    public class BaseRequestModel : PropertyFinderMixine
     {
         private BufferStream Buffer { get; set; }
 
@@ -43,25 +44,9 @@ namespace GMLoggerBackend.Models
 
         public void ParseBuffer()
         {
-            List<Position> positions = new List<Position>();
+            var thisProps = FindPropertyPosition();
 
-            var props = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
-
-            var thisProps = new Dictionary<int, PropertyInfo>();
-
-            foreach (var prop in props)
-            {
-                System.Attribute[] attrs = System.Attribute.GetCustomAttributes(prop, typeof(Position));
-                // Displaying output.  
-                foreach (System.Attribute attr in attrs)
-                {
-                    Position p = (Position)attr;
-
-                    thisProps.Add(p.pos, prop);
-                }
-            }
-
-            foreach(var prop in thisProps.OrderBy(x => x.Key))
+            foreach (var prop in thisProps.OrderBy(x => x.Key))
             {
                 Type prop_type = prop.Value.PropertyType;
                 Console.WriteLine(prop_type.Name);

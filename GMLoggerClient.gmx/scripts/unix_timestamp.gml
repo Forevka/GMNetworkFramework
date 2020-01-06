@@ -17,7 +17,7 @@
         var datetime = date_current_datetime();
     }
  
-    var timestamp = round(date_second_span(25569, datetime));
+    var timestamp = date_second_span(25569, datetime);
  
     date_set_timezone(timezone);
  

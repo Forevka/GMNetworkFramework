@@ -1,4 +1,4 @@
-﻿namespace GMLoggerBackend.Enum
+﻿namespace GMLoggerBackend.Enums
 {
     public enum ResponseFlag : ushort
     {

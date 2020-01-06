@@ -1,5 +1,4 @@
-﻿using GMLoggerBackend.Enum;
-using GMLoggerBackend.Enums;
+﻿using GMLoggerBackend.Enums;
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Helpers;
 using System;

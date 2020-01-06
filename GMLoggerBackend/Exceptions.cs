@@ -8,4 +8,11 @@ namespace GMLoggerBackend.Exceptions
         {
         }
     }
+
+    class StopProcessingException : Exception
+    {
+        public StopProcessingException(string message) : base(message)
+        {
+        }
+    }
 }
