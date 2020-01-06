@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GMLoggerBackend.Helpers;
+﻿using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Models;
+using System;
+using System.Collections.Generic;
 
 namespace GMLoggerBackend.Handlers
 {

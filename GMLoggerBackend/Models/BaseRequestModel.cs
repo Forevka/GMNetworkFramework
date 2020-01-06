@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMLoggerBackend.Models
 {
@@ -53,17 +51,14 @@ namespace GMLoggerBackend.Models
 
             foreach (var prop in props)
             {
-                System.Attribute[] attrs = System.Attribute.GetCustomAttributes(prop);
+                System.Attribute[] attrs = System.Attribute.GetCustomAttributes(prop, typeof(Position));
                 // Displaying output.  
                 foreach (System.Attribute attr in attrs)
                 {
-                    if (attr is Position)
-                    {
-                        Position p = (Position)attr;
-                        //Console.WriteLine(prop.Name);
-                        //Console.WriteLine(p.pos);
-                        thisProps.Add(p.pos, prop);
-                    }
+                    Position p = (Position)attr;
+                    //Console.WriteLine(prop.Name);
+                    //Console.WriteLine(p.pos);
+                    thisProps.Add(p.pos, prop);
                 }
             }
 

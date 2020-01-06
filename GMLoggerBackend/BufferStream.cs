@@ -1,10 +1,9 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using GMLoggerBackend.Enum;
+using System.Runtime.CompilerServices;
+using Array = System.Array;
+using BitConverter = System.BitConverter;
 using Encoding = System.Text.Encoding;
 using StringBuilder = System.Text.StringBuilder;
-using BitConverter = System.BitConverter;
-using Array = System.Array;
-using GMLoggerBackend.Enum;
 
 namespace GMLoggerBackend
 {

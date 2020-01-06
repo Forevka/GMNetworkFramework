@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Net;
-using System.Threading;
-using GMLoggerBackend.Handlers;
-using GMLoggerBackend.Enums;
+﻿using GMLoggerBackend.Enum;
 using GMLoggerBackend.Exceptions;
+using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Models;
-using GMLoggerBackend.Enum;
+using System;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace GMLoggerBackend.Helpers
 {
