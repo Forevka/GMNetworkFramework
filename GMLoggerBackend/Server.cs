@@ -1,6 +1,7 @@
 ﻿using GMLoggerBackend.Enums;
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Helpers;
+using GMLoggerBackend.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -108,60 +109,33 @@ namespace GMLoggerBackend
                 client.SendMessage(buffer);
             }
         }
-        
+
 
         /// <summary>
         /// Listens for clients and starts threads to handle them.
         /// </summary>
-        private void Listen(int port)
+        async private void Listen(int port)
         {
             TCPListener = new TcpListener(IPAddress.Any, port);
             TCPListener.Start();
-            
-            // Set the event to nonsignaled state.
-            tcpClientConnected.Reset();
 
-            // Start to listen for connections from a client.
-            Console.WriteLine("Waiting for a connection...");
-
-            // Accept the connection. 
-            // BeginAcceptSocket() creates the accepted socket.
-            TCPListener.BeginAcceptTcpClient(
-                new AsyncCallback(DoAcceptTcpClientCallback),
-                TCPListener);
-
-            // Wait until a connection is made and processed before 
-            // continuing.
-            tcpClientConnected.WaitOne();
-        }
-
-        // Process the client connection.
-        public void DoAcceptTcpClientCallback(IAsyncResult ar)
-        {
-            // Get the listener that handles the client request.
-            TcpListener listener = (TcpListener)ar.AsyncState;
-
-            // End the operation and display the received data on 
-            // the console.
-            TcpClient client = listener.EndAcceptTcpClient(ar);
-
-            // Process the connection here. (Add the client to a
-            // server table, read data, etc.)
-            Console.WriteLine("Client connected completed");
-
-            SocketHelper helper = new SocketHelper
+            while (true)
             {
-                Me = new Models.UserModel()
-            };
-            helper.StartClient(client, this);
-            Clients.Add(helper);
-
-            // Signal the calling thread to continue.
-            tcpClientConnected.Set();
-
-            TCPListener.BeginAcceptTcpClient(
-                new AsyncCallback(DoAcceptTcpClientCallback),
-                TCPListener);
+                try
+                {
+                    var tcpClient = await TCPListener.AcceptTcpClientAsync();
+                    SocketHelper helper = new SocketHelper
+                    {
+                        Me = new Models.UserModel()
+                    };
+                    helper.StartClient(tcpClient, this);
+                    Clients.Add(helper);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, ex.Message.ToString());
+                }
+            }
         }
     }
 }
