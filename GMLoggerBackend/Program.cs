@@ -3,6 +3,7 @@ using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Utils;
 using NLog.Fluent;
 using System;
+using System.Globalization;
 
 namespace GMLoggerBackend
 {
@@ -10,11 +11,15 @@ namespace GMLoggerBackend
     {
         static void Main(string[] args)
         {
+            CultureInfo.CurrentCulture = new CultureInfo("en-US", false);
+
             Console.WriteLine("Configuring Logger");
             Logger.Config();
             Console.WriteLine("Starting Server...");
             Server server = new Server();
             Logger.Debug($"Started at {DateTime.UtcNow}");
+            Logger.Error(new Exception(), "test");
+
             server.RegisterHandler(RequestFlag.Undefined, new HandlerUndefine());
             server.RegisterHandler(RequestFlag.Disconnect, new HandlerDisconnect());
 

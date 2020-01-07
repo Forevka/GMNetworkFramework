@@ -16,12 +16,20 @@ namespace GMLoggerBackend.Utils
             var config = new NLog.Config.LoggingConfiguration();
 
             // Targets where to log to: File and Console
-            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "file.txt" };
-            var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
+            var logfile = new NLog.Targets.FileTarget("logfile")
+            {
+                FileName = "file.txt",
+                Layout = "${longdate} ${uppercase:${level}} ${message} ${exception:format=Message,StackTrace,Data:maxInnerExceptionLevel=10}",
+            };
+            var logconsole = new NLog.Targets.ColoredConsoleTarget("logconsole")
+            {
+                Layout = "${longdate} ${uppercase:${level}} ${message} ${exception:format=Message,StackTrace,Data:maxInnerExceptionLevel=10}",
+            };
 
             // Rules for mapping loggers to targets            
             config.AddRuleForAllLevels(logconsole);
             config.AddRuleForAllLevels(logfile);
+            
 
             // Apply config           
             NLog.LogManager.Configuration = config;
