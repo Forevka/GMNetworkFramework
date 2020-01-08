@@ -2,6 +2,7 @@
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Utils;
+using GMLoggerBackend.Logic;
 using GMLoggerBackend.Middlewares;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace GMLoggerBackend
+namespace GMLoggerBackend.Logic
 {
     public class Server
     {
@@ -21,27 +22,21 @@ namespace GMLoggerBackend
         public Thread PingThread;
         public Thread MatchmakingThread;
         public TcpListener TCPListener = null;
-        public Dictionary<RequestFlag, List<IHandler>> Handlers = new Dictionary<RequestFlag, List<IHandler>>();
-        public List<IMiddleware> Middlewares = new List<IMiddleware>();
 
-        public void RegisterHandler(RequestFlag flag, IHandler handler)
+        private Dispatcher mainDispatcher;
+
+        public void SetMainDispatcher(Dispatcher dispatcher)
         {
-            List<IHandler> hList = null;
-
-            if (Handlers.TryGetValue(flag, out hList))
-                hList.Add(handler);
-            else
-            {
-                Handlers.Add(flag, new List<IHandler>() { handler });
-            }
+            mainDispatcher = dispatcher;
         }
-        public void RegisterMiddleware<T>(T middleware) where T: IMiddleware
+
+        public Dispatcher GetMainDispatcher()
         {
+            if (mainDispatcher == null)
+                mainDispatcher = new Dispatcher("MAIN");
 
-            Middlewares.Add(middleware);
-            
+            return mainDispatcher;
         }
-        
 
         /// <summary>
         /// Starts the server.
@@ -137,8 +132,9 @@ namespace GMLoggerBackend
                     {
                         Me = new Models.UserModel()
                     };
-                    helper.StartClient(tcpClient, this);
                     Clients.Add(helper);
+
+                    helper.StartClient(tcpClient, this, mainDispatcher);
                 }
                 catch (Exception ex)
                 {

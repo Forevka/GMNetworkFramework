@@ -50,6 +50,11 @@ namespace GMLoggerBackend.Utils
             _logger.Error(ex, msg);
         }
 
+        public static void Error(Exception ex)
+        {
+            _logger.Error(ex);
+        }
+
         public static void Warn(Exception ex, string msg)
         {
             _logger.Warn(ex, msg);

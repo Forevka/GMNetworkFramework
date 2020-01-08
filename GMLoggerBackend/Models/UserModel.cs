@@ -8,6 +8,6 @@ namespace GMLoggerBackend.Models
 
         public string Name { get; set; }
 
-        public Guid Guid { get; set; }
+        public Guid Guid { get; } = Guid.NewGuid();
     }
 }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
+using GMLoggerBackend.Logic;
 
 namespace GMLoggerBackend.Helpers
 {
@@ -19,21 +20,27 @@ namespace GMLoggerBackend.Helpers
         Queue<BufferStream> WriteQueue = new Queue<BufferStream>();
         public Thread ReadThread;
         public Thread WriteThread;
-        public Thread AbortThread;
+        private Thread AbortThread;
         public TcpClient MscClient;
         public Server ParentServer;
         public UserModel Me;
 
+        private Dispatcher _dispatcher;
+        public Dictionary<Guid, List<IMiddleware>> myMiddlewares;
+
         /// <summary>
         /// Starts the given client in two threads for reading and writing.
         /// </summary>
-        public void StartClient(TcpClient client, Server server)
+        public void StartClient(TcpClient client, Server server, Dispatcher dispatcher)
         {
             //Sets client variable.
             MscClient = client;
             MscClient.SendBufferSize = (int)BufferType.BufferSize;
             MscClient.ReceiveBufferSize = (int)BufferType.BufferSize;
             ParentServer = server;
+
+            _dispatcher = dispatcher;
+            myMiddlewares = dispatcher.InitializeMiddlewares();
 
             //Starts a read thread.
             ReadThread = new Thread(new ThreadStart(delegate
@@ -95,7 +102,7 @@ namespace GMLoggerBackend.Helpers
                 Flag = (ushort)Enums.RequestFlag.Disconnect
             };
 
-            InvokeHandlers(model);
+            _dispatcher.Handle(model, Me, this);
 
             //Closes Stream.
             MscClient.Close();
@@ -141,22 +148,32 @@ namespace GMLoggerBackend.Helpers
                         stream.Write(buffer.Memory, 0, buffer.Iterator);
                         stream.Flush();
                     }
-                    catch (System.IO.IOException)
+                    catch (System.IO.IOException ex)
                     {
+                        Logger.Error(ex);
                         DisconnectClient();
                         break;
                     }
-                    catch (NullReferenceException)
+                    catch (NullReferenceException ex)
                     {
+                        Logger.Error(ex);
                         DisconnectClient();
                         break;
                     }
-                    catch (ObjectDisposedException)
+                    catch (ObjectDisposedException ex)
                     {
+                        Logger.Error(ex);
                         break;
                     }
-                    catch (System.InvalidOperationException)
+                    catch (System.InvalidOperationException ex)
                     {
+                        Logger.Error(ex);
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                        DisconnectClient();
                         break;
                     }
                 }
@@ -174,134 +191,41 @@ namespace GMLoggerBackend.Helpers
                 try
                 {
                     Thread.Sleep(10);
-                    BufferStream readBuffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
                     NetworkStream stream = client.GetStream();
+
+                    BufferStream readBuffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
                     stream.Read(readBuffer.Memory, 0, (int)BufferType.BufferSize);
 
                     //Read the header data.
                     BaseRequestModel model = BaseRequestModel.FromStream(readBuffer);
                     model.ParseFlag();
-                    InvokePreMiddleware(model);
-                    InvokeHandlers(model);
-                    InvokePostMiddleware(model);
+
+                    _dispatcher.Handle(model, Me, this);
                 }
-                catch (System.IO.IOException)
+                catch (System.IO.IOException ex)
                 {
+                    Logger.Error(ex);
                     DisconnectClient();
                     break;
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
+                    Logger.Error(ex);
                     DisconnectClient();
                     break;
                 }
-                catch (ObjectDisposedException)
+                catch (ObjectDisposedException ex)
                 {
-                    //Do nothing.
+                    Logger.Error(ex);
+                    break;
+                }
+                catch(Exception ex)
+                {
+                    Logger.Error(ex);
+                    DisconnectClient();
                     break;
                 }
             }
         }
-        private void InvokePostMiddleware(BaseRequestModel model)
-        {
-            List<IMiddleware> mList = null;
-
-            bool isStop = false;
-            mList.ForEach(x =>
-            {
-                try
-                {
-                    if (!isStop)
-                    {
-                        IMiddleware middlewares = new x.GetType(); 
-                        x.PostProcess(model, this.Me, this);
-                    }
-                }
-                catch (CancelHandlerException)
-                {
-                    Logger.Debug($"{x.GetType().Name} skipped");
-                }
-                catch (StopProcessingException)
-                {
-                    isStop = true;
-                    Logger.Debug($"Invoking middlewares stopped by {x.GetType().Name}");
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "Error while invoking middlewares");
-                }
-            });
-        }
-
-        private void InvokePreMiddleware(BaseRequestModel model)
-        {
-            List<IMiddleware> mList = null;
-
-            bool isStop = false;
-            mList.ForEach(x =>
-            {
-                try
-                {
-                    if (!isStop)
-                    {
-                        x.PreProcess(model, this.Me, this);
-                    }
-                }
-                catch (CancelHandlerException)
-                {
-                    Logger.Debug($"{x.GetType().Name} skipped");
-                }
-                catch (StopProcessingException)
-                {
-                    isStop = true;
-                    Logger.Debug($"Invoking middlewares stopped by {x.GetType().Name}");
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "Error while invoking middlewares");
-                }
-            });
-        }
-        private void InvokeHandlers(BaseRequestModel model)
-        {
-            
-            List<IHandler> hList = null;
-
-            Dictionary<string, string> data = new Dictionary<string, string>();
-
-            if (ParentServer.Handlers.TryGetValue(model.requestFlag, out hList))
-            {
-                bool isStop = false;
-                hList.ForEach(x =>
-                {
-                    try
-                    {
-                        if (!isStop)
-                        {
-                            x.Process(model, this.Me, this, data);
-                        }
-                    }
-                    catch (CancelHandlerException)
-                    {
-                        Logger.Debug($"{x.GetType().Name} skipped");
-                    }
-                    catch (StopProcessingException)
-                    {
-                        isStop = true;
-                        Logger.Debug($"Invoking handlers stopped by {x.GetType().Name}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex, "Error while invoking handlers");
-                    }
-                });
-            }
-            else
-            {
-                var unhandled = new Unhandled();
-                unhandled.Process(model, this.Me, this, data);
-            }
-        }
-
     }
 }

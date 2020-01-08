@@ -17,7 +17,6 @@ namespace GMLoggerBackend.Handlers
             //Update client information.
             user.IpAddress = mySocket.MscClient.Client.RemoteEndPoint.ToString();
             user.Name = thisModel.Name;
-            user.Guid = new Guid();
 
             //Console Message.
             Console.WriteLine(user.IpAddress + $" connected. Name: {thisModel.Name}");

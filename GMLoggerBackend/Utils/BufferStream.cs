@@ -5,7 +5,7 @@ using BitConverter = System.BitConverter;
 using Encoding = System.Text.Encoding;
 using StringBuilder = System.Text.StringBuilder;
 
-namespace GMLoggerBackend
+namespace GMLoggerBackend.Utils
 {
     /// <summary>
     /// Enumerator that represents the size of each datatype supported by the BufferStream class.
