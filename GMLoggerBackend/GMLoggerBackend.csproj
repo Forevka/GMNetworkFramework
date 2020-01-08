@@ -71,7 +71,6 @@
     <Compile Include="Middlewares\MiddlewareLogTime.cs" />
     <Compile Include="Models\BaseRequestModel.cs" />
     <Compile Include="Models\BaseResponseModel.cs" />
-    <Compile Include="Models\IEnumarable.cs" />
     <Compile Include="Models\Request\LogModelRequest.cs" />
     <Compile Include="Models\Request\NewConnectionModelRequest.cs" />
     <Compile Include="Models\Request\PingModelRequest.cs" />

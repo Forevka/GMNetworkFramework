@@ -202,8 +202,7 @@ namespace GMLoggerBackend.Helpers
 
                     _dispatcher.Handle(model, Me, this);
                 }
-                
-                catch (System.IO.IOException)
+                catch (System.IO.IOException ex)
                 {
                     Logger.Error(ex);
                     DisconnectClient();
