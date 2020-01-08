@@ -22,7 +22,7 @@ namespace GMLoggerBackend
         public Thread MatchmakingThread;
         public TcpListener TCPListener = null;
         public Dictionary<RequestFlag, List<IHandler>> Handlers = new Dictionary<RequestFlag, List<IHandler>>();
-        public List<IMiddlewares> Middlewares = new List<IMiddlewares>();
+        public List<IMiddleware> Middlewares = new List<IMiddleware>();
 
         public void RegisterHandler(RequestFlag flag, IHandler handler)
         {
@@ -35,10 +35,13 @@ namespace GMLoggerBackend
                 Handlers.Add(flag, new List<IHandler>() { handler });
             }
         }
-        public void RegisterMiddleware(IMiddlewares middlewares)
+        public void RegisterMiddleware<T>(T middleware) where T: IMiddleware
         {
-            Middlewares.Add(middlewares);
+
+            Middlewares.Add(middleware);
+            
         }
+        
 
         /// <summary>
         /// Starts the server.

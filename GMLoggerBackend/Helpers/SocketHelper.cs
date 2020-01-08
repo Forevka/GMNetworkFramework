@@ -181,8 +181,9 @@ namespace GMLoggerBackend.Helpers
                     //Read the header data.
                     BaseRequestModel model = BaseRequestModel.FromStream(readBuffer);
                     model.ParseFlag();
-                    
+                    InvokePreMiddleware(model);
                     InvokeHandlers(model);
+                    InvokePostMiddleware(model);
                 }
                 catch (System.IO.IOException)
                 {
@@ -201,16 +202,19 @@ namespace GMLoggerBackend.Helpers
                 }
             }
         }
-        private void InvokeMiddlewares(BaseRequestModel model)
+        private void InvokePostMiddleware(BaseRequestModel model)
         {
+            List<IMiddleware> mList = null;
+
             bool isStop = false;
-            ParentServer.Middlewares.ForEach(x =>
+            mList.ForEach(x =>
             {
                 try
                 {
                     if (!isStop)
                     {
-                        x.Process(model, this.Me, this);
+                        IMiddleware middlewares = new x.GetType(); 
+                        x.PostProcess(model, this.Me, this);
                     }
                 }
                 catch (CancelHandlerException)
@@ -227,10 +231,40 @@ namespace GMLoggerBackend.Helpers
                     Logger.Error(ex, "Error while invoking middlewares");
                 }
             });
+        }
 
+        private void InvokePreMiddleware(BaseRequestModel model)
+        {
+            List<IMiddleware> mList = null;
+
+            bool isStop = false;
+            mList.ForEach(x =>
+            {
+                try
+                {
+                    if (!isStop)
+                    {
+                        x.PreProcess(model, this.Me, this);
+                    }
+                }
+                catch (CancelHandlerException)
+                {
+                    Logger.Debug($"{x.GetType().Name} skipped");
+                }
+                catch (StopProcessingException)
+                {
+                    isStop = true;
+                    Logger.Debug($"Invoking middlewares stopped by {x.GetType().Name}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "Error while invoking middlewares");
+                }
+            });
         }
         private void InvokeHandlers(BaseRequestModel model)
         {
+            
             List<IHandler> hList = null;
 
             Dictionary<string, string> data = new Dictionary<string, string>();

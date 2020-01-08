@@ -2,6 +2,7 @@
 {
     public enum RequestFlag : ushort
     {
+        ForAll = ushort.MaxValue,
         Undefined = 0,
         Disconnect = 1,
         NewConnection = 2000,

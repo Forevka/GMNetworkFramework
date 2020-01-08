@@ -1,6 +1,7 @@
 ﻿using GMLoggerBackend.Enums;
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Utils;
+using GMLoggerBackend.Middlewares;
 using NLog.Fluent;
 using System;
 using System.Globalization;
@@ -19,7 +20,7 @@ namespace GMLoggerBackend
             Server server = new Server();
             Logger.Debug($"Started at {DateTime.UtcNow}");
             Logger.Error(new Exception(), "test");
-
+            server.RegisterMiddleware<MiddlewareTimeOfProcessing>(MiddlewareTimeOfProcessing);
             server.RegisterHandler(RequestFlag.Undefined, new HandlerUndefine());
             server.RegisterHandler(RequestFlag.Disconnect, new HandlerDisconnect());
 
