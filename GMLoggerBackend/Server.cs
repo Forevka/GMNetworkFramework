@@ -2,6 +2,7 @@
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Helpers;
 using GMLoggerBackend.Utils;
+using GMLoggerBackend.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -21,6 +22,7 @@ namespace GMLoggerBackend
         public Thread MatchmakingThread;
         public TcpListener TCPListener = null;
         public Dictionary<RequestFlag, List<IHandler>> Handlers = new Dictionary<RequestFlag, List<IHandler>>();
+        public List<IMiddlewares> Middlewares = new List<IMiddlewares>();
 
         public void RegisterHandler(RequestFlag flag, IHandler handler)
         {
@@ -32,6 +34,10 @@ namespace GMLoggerBackend
             {
                 Handlers.Add(flag, new List<IHandler>() { handler });
             }
+        }
+        public void RegisterMiddleware(IMiddlewares middlewares)
+        {
+            Middlewares.Add(middlewares);
         }
 
         /// <summary>

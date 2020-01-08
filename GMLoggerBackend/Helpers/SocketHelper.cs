@@ -3,6 +3,7 @@ using GMLoggerBackend.Exceptions;
 using GMLoggerBackend.Handlers;
 using GMLoggerBackend.Models;
 using GMLoggerBackend.Utils;
+using GMLoggerBackend.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -180,7 +181,7 @@ namespace GMLoggerBackend.Helpers
                     //Read the header data.
                     BaseRequestModel model = BaseRequestModel.FromStream(readBuffer);
                     model.ParseFlag();
-
+                    
                     InvokeHandlers(model);
                 }
                 catch (System.IO.IOException)
@@ -200,7 +201,34 @@ namespace GMLoggerBackend.Helpers
                 }
             }
         }
+        private void InvokeMiddlewares(BaseRequestModel model)
+        {
+            bool isStop = false;
+            ParentServer.Middlewares.ForEach(x =>
+            {
+                try
+                {
+                    if (!isStop)
+                    {
+                        x.Process(model, this.Me, this);
+                    }
+                }
+                catch (CancelHandlerException)
+                {
+                    Logger.Debug($"{x.GetType().Name} skipped");
+                }
+                catch (StopProcessingException)
+                {
+                    isStop = true;
+                    Logger.Debug($"Invoking middlewares stopped by {x.GetType().Name}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "Error while invoking middlewares");
+                }
+            });
 
+        }
         private void InvokeHandlers(BaseRequestModel model)
         {
             List<IHandler> hList = null;
