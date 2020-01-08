@@ -183,7 +183,13 @@ namespace GMLoggerBackend.Helpers
 
                     InvokeHandlers(model);
                 }
-                catch (System.IO.IOException)
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "smth went wrong");
+                    DisconnectClient();
+                    break;
+                }
+                /*catch (System.IO.IOException)
                 {
                     DisconnectClient();
                     break;
@@ -197,7 +203,7 @@ namespace GMLoggerBackend.Helpers
                 {
                     //Do nothing.
                     break;
-                }
+                }*/
             }
         }
 

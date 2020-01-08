@@ -54,5 +54,10 @@ namespace GMLoggerBackend.Utils
         {
             _logger.Warn(ex, msg);
         }
+
+        public static void Warn(string msg)
+        {
+            _logger.Warn(msg);
+        }
     }
 }

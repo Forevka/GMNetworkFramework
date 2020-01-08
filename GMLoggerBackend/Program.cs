@@ -18,7 +18,6 @@ namespace GMLoggerBackend
             Console.WriteLine("Starting Server...");
             Server server = new Server();
             Logger.Debug($"Started at {DateTime.UtcNow}");
-            Logger.Error(new Exception(), "test");
 
             server.RegisterHandler(RequestFlag.Undefined, new HandlerUndefine());
             server.RegisterHandler(RequestFlag.Disconnect, new HandlerDisconnect());

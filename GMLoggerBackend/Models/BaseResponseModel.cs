@@ -63,6 +63,10 @@ namespace GMLoggerBackend.Models
                 {
                     _buffer.Write((float)prop.Value.GetValue(this));
                 }
+                else
+                {
+                    Logger.Warn($"Doesnt exist case for type {prop_type.Name} on Response");
+                }
             }
         }
 
