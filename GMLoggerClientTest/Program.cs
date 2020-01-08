@@ -54,7 +54,7 @@ namespace GMLoggerClientTest
                 stm.Write(full_buf, 0, full_buf.Length);
                 //stm.Write(ba, flag.Length - 1, ba.Count());
 
-                byte[] bb = new byte[100];
+                byte[] bb = new byte[256];
                 int k = stm.Read(bb, 0, 100);
 
                 for (int i = 0; i < k; i++)

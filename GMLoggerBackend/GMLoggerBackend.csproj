@@ -68,9 +68,11 @@
     <Compile Include="Helpers\SocketHelper.cs" />
     <Compile Include="Models\BaseRequestModel.cs" />
     <Compile Include="Models\BaseResponseModel.cs" />
+    <Compile Include="Models\IEnumarable.cs" />
     <Compile Include="Models\Request\LogModelRequest.cs" />
     <Compile Include="Models\Request\NewConnectionModelRequest.cs" />
     <Compile Include="Models\Request\PingModelRequest.cs" />
+    <Compile Include="Models\Response\LogModelResponse.cs" />
     <Compile Include="Models\Response\PlayersCountModelResponse.cs" />
     <Compile Include="Models\Response\PingModelResponse.cs" />
     <Compile Include="Models\UserModel.cs" />

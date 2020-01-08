@@ -6,6 +6,6 @@ namespace GMLoggerBackend.Models.Request
     public class LogModelRequest : BaseRequestModel
     {
         [Position(0)]
-        public IEnumerable<int> msg { get; set; }
+        public List<int> msg { get; set; }
     }
 }

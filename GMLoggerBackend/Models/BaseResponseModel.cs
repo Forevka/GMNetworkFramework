@@ -43,30 +43,68 @@ namespace GMLoggerBackend.Models
             {
                 Type prop_type = prop.Value.PropertyType;
                 Console.WriteLine(prop_type.Name);
-                if (prop_type == typeof(string))
+                
+                if (IsEnumerable(prop.Value))
                 {
-                    _buffer.Write((string)prop.Value.GetValue(this));
-                }
-                else if (prop_type == typeof(int))
-                {
-                    _buffer.Write((int)prop.Value.GetValue(this));
-                }
-                else if (prop_type == typeof(bool))
-                {
-                    _buffer.Write((bool)prop.Value.GetValue(this));
-                }
-                else if (prop_type == typeof(double))
-                {
-                    _buffer.Write((double)prop.Value.GetValue(this));
-                }
-                else if (prop_type == typeof(float))
-                {
-                    _buffer.Write((float)prop.Value.GetValue(this));
+                    Logger.Warn($"Found list of {prop_type.Name} in {prop.Value.Name}");
+
+                    ComposeListProperty(prop.Value);
                 }
                 else
                 {
-                    Logger.Warn($"Doesnt exist case for type {prop_type.Name} on Response");
+                    ComposeOneProperty(prop.Value);
                 }
+            }
+        }
+
+        private void ComposeListProperty(PropertyInfo prop)
+        {
+            var elementType = prop.PropertyType.GetGenericArguments()[0];
+
+            Logger.Warn($"Generic type {elementType.Name}");
+
+            if (elementType == typeof(string))
+            {
+                var collection = prop.GetValue(this) as List<string>;
+
+                ushort count = (ushort)collection.Count;
+
+                Logger.Warn($"Count {count}");
+
+                _buffer.Write(count);
+
+                foreach(var val in collection)
+                {
+                    _buffer.Write(val);
+                }
+            }
+        }
+
+        private void ComposeOneProperty(PropertyInfo prop)
+        {
+            if (prop.PropertyType == typeof(string))
+            {
+                _buffer.Write((string)prop.GetValue(this));
+            }
+            else if (prop.PropertyType == typeof(int))
+            {
+                _buffer.Write((int)prop.GetValue(this));
+            }
+            else if (prop.PropertyType == typeof(bool))
+            {
+                _buffer.Write((bool)prop.GetValue(this));
+            }
+            else if (prop.PropertyType == typeof(double))
+            {
+                _buffer.Write((double)prop.GetValue(this));
+            }
+            else if (prop.PropertyType == typeof(float))
+            {
+                _buffer.Write((float)prop.GetValue(this));
+            }
+            else
+            {
+                Logger.Warn($"Doesnt exist case for {prop.Name} on Response");
             }
         }
 

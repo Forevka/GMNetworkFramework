@@ -1,5 +1,6 @@
 ﻿using GMLoggerBackend.Utils.Attributes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -29,6 +30,11 @@ namespace GMLoggerBackend.Utils
             }
 
             return thisProps;
+        }
+
+        public bool IsEnumerable(PropertyInfo prop)
+        {
+            return prop.PropertyType.GetInterfaces().Contains(typeof(IList));
         }
     }
 }

@@ -64,11 +64,6 @@ namespace GMLoggerBackend.Models
             }      
         }
 
-        private bool IsEnumerable(PropertyInfo prop)
-        {
-            return prop.PropertyType.GetInterfaces().Contains(typeof(IEnumerable));
-        }
-
         private void ParseListProperty(PropertyInfo prop)
         {
             ushort count;
