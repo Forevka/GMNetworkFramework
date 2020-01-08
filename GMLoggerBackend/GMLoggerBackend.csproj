@@ -66,6 +66,8 @@
     <Compile Include="Handlers\HandlerNewConnection.cs" />
     <Compile Include="Handlers\Unhandled.cs" />
     <Compile Include="Helpers\SocketHelper.cs" />
+    <Compile Include="Middlewares\IMiddleware.cs" />
+    <Compile Include="Middlewares\MiddlewareTimeOfProcessing.cs" />
     <Compile Include="Models\BaseRequestModel.cs" />
     <Compile Include="Models\BaseResponseModel.cs" />
     <Compile Include="Models\Request\LogModelRequest.cs" />
