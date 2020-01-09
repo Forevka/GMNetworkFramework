@@ -1,12 +1,12 @@
-﻿using GMLoggerBackend.Enums;
-using GMLoggerBackend.Utils;
-using GMLoggerBackend.Utils.Attributes;
+﻿using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Utils;
+using GMNetworkFramework.Server.Utils.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace GMLoggerBackend.Models
+namespace GMNetworkFramework.Server.Models
 {
     public class BaseResponseModel : PropertyFinderMixine
     {
@@ -28,11 +28,6 @@ namespace GMLoggerBackend.Models
             new_model.Write(_flag);
 
             return new_model;
-        }
-
-        public static T Model<T>(ResponseFlag _flag) where T : BaseResponseModel, new()
-        {
-            return Model<T>((ushort)_flag);
         }
 
         public void ComposeBuffer()

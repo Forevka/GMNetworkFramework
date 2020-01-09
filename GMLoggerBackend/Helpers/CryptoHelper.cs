@@ -1,12 +1,12 @@
-﻿using GMLoggerBackend.Utils;
-using MyAES.Security;
+﻿using GMNetworkFramework.Server.Utils;
+using GMNetworkFramework.Server.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMLoggerBackend.Helpers
+namespace GMNetworkFramework.Server.Helpers
 {
     class CryptoHelper : MyAesCrypto, ICrypto
     {

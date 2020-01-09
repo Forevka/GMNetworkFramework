@@ -1,8 +1,8 @@
-﻿using GMLoggerBackend.Helpers;
-using GMLoggerBackend.Models;
+﻿using GMNetworkFramework.Server.Helpers;
+using GMNetworkFramework.Server.Models;
 using System.Collections.Generic;
 
-namespace GMLoggerBackend.Handlers
+namespace GMNetworkFramework.Server.Handlers
 {
     public interface IHandler
     {

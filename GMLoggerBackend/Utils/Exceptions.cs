@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GMLoggerBackend.Exceptions
+namespace GMNetworkFramework.Server.Exceptions
 {
     class CancelHandlerException : Exception
     {

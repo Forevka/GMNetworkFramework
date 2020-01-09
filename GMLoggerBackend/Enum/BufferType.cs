@@ -1,4 +1,4 @@
-﻿namespace GMLoggerBackend.Enums
+﻿namespace GMNetworkFramework.Server.Enums
 {
     public enum BufferType
     {

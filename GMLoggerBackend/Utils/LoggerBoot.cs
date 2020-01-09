@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMLoggerBackend.Utils
+namespace GMNetworkFramework.Server.Utils
 {
-    class Logger
+    public class Logger
     {
         private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 

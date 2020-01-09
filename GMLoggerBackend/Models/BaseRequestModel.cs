@@ -1,21 +1,19 @@
-﻿using GMLoggerBackend.Enums;
-using GMLoggerBackend.Utils;
-using GMLoggerBackend.Utils.Attributes;
+﻿using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Utils;
+using GMNetworkFramework.Server.Utils.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace GMLoggerBackend.Models
+namespace GMNetworkFramework.Server.Models
 {
     public class BaseRequestModel : PropertyFinderMixine
     {
         private BufferStream Buffer { get; set; }
 
         public ushort Flag { get; set; } = 0;
-
-        public RequestFlag requestFlag { get { return (RequestFlag)Flag; }  }
         
         public static BaseRequestModel FromStream(BufferStream buffer)
         {

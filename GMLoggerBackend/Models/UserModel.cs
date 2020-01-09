@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GMLoggerBackend.Models
+namespace GMNetworkFramework.Server.Models
 {
     public class UserModel
     {

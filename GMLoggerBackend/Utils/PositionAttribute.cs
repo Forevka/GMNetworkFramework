@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GMLoggerBackend.Utils.Attributes
+namespace GMNetworkFramework.Server.Utils.Attributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class Position : Attribute

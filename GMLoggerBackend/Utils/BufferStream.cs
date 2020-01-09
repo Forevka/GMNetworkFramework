@@ -1,11 +1,11 @@
-﻿using GMLoggerBackend.Enums;
+﻿using GMNetworkFramework.Server.Enums;
 using System.Runtime.CompilerServices;
 using Array = System.Array;
 using BitConverter = System.BitConverter;
 using Encoding = System.Text.Encoding;
 using StringBuilder = System.Text.StringBuilder;
 
-namespace GMLoggerBackend.Utils
+namespace GMNetworkFramework.Server.Utils
 {
     /// <summary>
     /// Enumerator that represents the size of each datatype supported by the BufferStream class.

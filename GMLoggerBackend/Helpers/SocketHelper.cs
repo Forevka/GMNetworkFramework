@@ -1,16 +1,14 @@
-﻿using GMLoggerBackend.Enums;
-using GMLoggerBackend.Exceptions;
-using GMLoggerBackend.Handlers;
-using GMLoggerBackend.Models;
-using GMLoggerBackend.Utils;
-using GMLoggerBackend.Middlewares;
+﻿using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Logic;
+using GMNetworkFramework.Server.Middlewares;
+using GMNetworkFramework.Server.Models;
+using GMNetworkFramework.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
-using GMLoggerBackend.Logic;
 
-namespace GMLoggerBackend.Helpers
+namespace GMNetworkFramework.Server.Helpers
 {
     /// <summary>
     /// Handles clients. Reads and writes data and stores client information.
@@ -22,7 +20,7 @@ namespace GMLoggerBackend.Helpers
         public Thread WriteThread;
         private Thread AbortThread;
         public TcpClient MscClient;
-        public Server ParentServer;
+        public TCPServer ParentServer;
         public UserModel Me;
 
         private Dispatcher _dispatcher;
@@ -31,7 +29,7 @@ namespace GMLoggerBackend.Helpers
         /// <summary>
         /// Starts the given client in two threads for reading and writing.
         /// </summary>
-        public void StartClient(TcpClient client, Server server, Dispatcher dispatcher)
+        public void StartClient(TcpClient client, TCPServer server, Dispatcher dispatcher)
         {
             //Sets client variable.
             MscClient = client;
@@ -99,7 +97,7 @@ namespace GMLoggerBackend.Helpers
             //Call Handlers for disconect user
             BaseRequestModel model = new BaseRequestModel
             {
-                Flag = (ushort)Enums.RequestFlag.Disconnect
+                Flag = (ushort)RequestFlag.Disconnect
             };
 
             _dispatcher.Handle(model, Me, this);

@@ -1,4 +1,4 @@
-﻿using GMLoggerBackend.Utils.Attributes;
+﻿using GMNetworkFramework.Server.Utils.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMLoggerBackend.Utils
+namespace GMNetworkFramework.Server.Utils
 {
     public class PropertyFinderMixine
     {

@@ -1,24 +1,24 @@
-﻿using GMLoggerBackend.Enums;
-using GMLoggerBackend.Exceptions;
-using GMLoggerBackend.Handlers;
-using GMLoggerBackend.Helpers;
-using GMLoggerBackend.Middlewares;
-using GMLoggerBackend.Models;
-using GMLoggerBackend.Utils;
+﻿using GMNetworkFramework.Server.Handlers;
+using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Exceptions;
+using GMNetworkFramework.Server.Helpers;
+using GMNetworkFramework.Server.Middlewares;
+using GMNetworkFramework.Server.Models;
+using GMNetworkFramework.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GMLoggerBackend.Logic
+namespace GMNetworkFramework.Server.Logic
 {
     public class Dispatcher
     {
         public bool isWorking = true;
         public string Name;
 
-        private Dictionary<RequestFlag, List<IHandler>> Handlers = new Dictionary<RequestFlag, List<IHandler>>();
+        private Dictionary<ushort, List<IHandler>> Handlers = new Dictionary<ushort, List<IHandler>>();
         private List<Type> MiddlewaresABC = new List<Type>();
 
         private List<IMiddleware> Middlewares = new List<IMiddleware>();
@@ -32,7 +32,7 @@ namespace GMLoggerBackend.Logic
             Name = name;
         }
 
-        public void RegisterHandler(RequestFlag flag, IHandler handler)
+        public void RegisterHandler(ushort flag, IHandler handler)
         {
             List<IHandler> hList = null;
 
@@ -84,7 +84,7 @@ namespace GMLoggerBackend.Logic
         {
             var handled = false;
 
-            if (Handlers.TryGetValue(model.requestFlag, out List<IHandler> hList))
+            if (Handlers.TryGetValue(model.Flag, out List<IHandler> hList))
             {
                 handled = true;
                 bool isStop = false;
@@ -127,8 +127,8 @@ namespace GMLoggerBackend.Logic
                 .Where(x => x.Key == Id)
                 .Select(xx => xx.Value)
                 .SelectMany(x => x.FindAll(m =>
-                                            m.Flags.Contains(RequestFlag.ForAll) ||
-                                            m.Flags.Contains(model.requestFlag)));
+                                            m.Flags.Contains((ushort)RequestFlag.ForAll) ||
+                                            m.Flags.Contains(model.Flag)));
 
 
             //Logger.Debug($"{Name} PreProcess midlewares start");
@@ -167,8 +167,36 @@ namespace GMLoggerBackend.Logic
 
             if (!handled)
             {
-                var unhandled = new Unhandled();
-                unhandled.Process(model, user, socket, data);
+                if (Handlers.TryGetValue((ushort)RequestFlag.Unhandled, out List<IHandler> hList))
+                {
+                    //var unhandled = new Unhandled();
+                    //unhandled.Process(model, user, socket, data);
+                    bool isStop = false;
+                    hList.ForEach(x =>
+                    {
+                        try
+                        {
+                            if (!isStop)
+                            {
+                                Logger.Debug($"Processing {x.GetType().Name}");
+                                x.Process(model, user, socket, data);
+                            }
+                        }
+                        catch (CancelHandlerException)
+                        {
+                            Logger.Debug($"{x.GetType().Name} skipped");
+                        }
+                        catch (StopProcessingException)
+                        {
+                            isStop = true;
+                            Logger.Debug($"Invoking handlers stopped by {x.GetType().Name}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, "Error while invoking handlers");
+                        }
+                    });
+                }
             }
         }
     }

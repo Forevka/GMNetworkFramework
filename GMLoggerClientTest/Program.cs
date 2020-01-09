@@ -1,6 +1,6 @@
-﻿using GMLoggerBackend.Enums;
-using GMLoggerBackend.Utils;
-using MyAES.Security;
+﻿using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Utils;
+using GMNetworkFramework.Server.Security;
 using System;
 using System.Collections.Generic;
 using System.IO;

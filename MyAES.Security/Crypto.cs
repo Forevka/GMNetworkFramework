@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace MyAES.Security
+namespace GMNetworkFramework.Server.Security
 {
     public class MyAesCrypto
     {
@@ -28,7 +26,7 @@ namespace MyAES.Security
         private string _password;
 
         #endregion
-
+        
         public MyAesCrypto(string password, string salt, string vector, Encoding encoding)
         {
             myEncoding = encoding;

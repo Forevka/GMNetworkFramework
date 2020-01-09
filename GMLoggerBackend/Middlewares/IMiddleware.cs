@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GMLoggerBackend.Enums;
-using GMLoggerBackend.Helpers;
-using GMLoggerBackend.Logic;
-using GMLoggerBackend.Models;
+using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Helpers;
+using GMNetworkFramework.Server.Logic;
+using GMNetworkFramework.Server.Models;
 
 
 
-namespace GMLoggerBackend.Middlewares
+namespace GMNetworkFramework.Server.Middlewares
 {
     public interface IMiddleware : IDisposable
     {
-        List<RequestFlag> Flags { get; }
+        List<ushort> Flags { get; }
 
         void OnStart(Dispatcher masterDispatcher);
 
