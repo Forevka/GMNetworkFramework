@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6E38EB0E-B1CA-4127-9B63-7DA9668FF049}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>MyEAS</RootNamespace>
-    <AssemblyName>MyEAS</AssemblyName>
+    <ProjectGuid>{2FCFB8BF-2C28-42A3-88DC-7C8D5EA46237}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GMNetworkFramework.Server</RootNamespace>
+    <AssemblyName>GMNetworkFramework.Server</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,9 +33,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,16 +55,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Helpers\CryptoHelper.cs" />
+    <Compile Include="Utils\BufferStream.cs" />
+    <Compile Include="Logic\Dispatcher.cs" />
+    <Compile Include="Enum\BufferType.cs" />
+    <Compile Include="Enum\RequestFlag.cs" />
+    <Compile Include="Enum\ResponseFlag.cs" />
+    <Compile Include="Utils\Exceptions.cs" />
+    <Compile Include="Handlers\IHandler.cs" />
+    <Compile Include="Helpers\SocketHelper.cs" />
+    <Compile Include="Middlewares\IMiddleware.cs" />
+    <Compile Include="Models\BaseRequestModel.cs" />
+    <Compile Include="Models\BaseResponseModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Logic\TCPServer.cs" />
+    <Compile Include="Utils\LoggerBoot.cs" />
+    <Compile Include="Utils\PositionAttribute.cs" />
+    <Compile Include="Utils\PropertyFinder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyAES.Security\MyAES.Security.csproj">
+    <ProjectReference Include="..\GMNetworkFramework.Security\GMNetworkFramework.Security.csproj">
       <Project>{890D378D-B987-46D6-8541-92104DDE33DA}</Project>
-      <Name>MyAES.Security</Name>
+      <Name>GMNetworkFramework.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Server", "GMLoggerBackend\GMNetworkFramework.Server.csproj", "{2FCFB8BF-2C28-42A3-88DC-7C8D5EA46237}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Server", "GMNetworkFramework.Server\GMNetworkFramework.Server.csproj", "{2FCFB8BF-2C28-42A3-88DC-7C8D5EA46237}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Client", "GMLoggerClientTest\GMNetworkFramework.Client.csproj", "{E78B31C4-D9E0-4BDF-BE5C-CD78BA9EB73D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Client", "GMNetworkFramework.Client\GMNetworkFramework.Client.csproj", "{E78B31C4-D9E0-4BDF-BE5C-CD78BA9EB73D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Security", "MyAES.Security\GMNetworkFramework.Security.csproj", "{890D378D-B987-46D6-8541-92104DDE33DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Security", "GMNetworkFramework.Security\GMNetworkFramework.Security.csproj", "{890D378D-B987-46D6-8541-92104DDE33DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Export", "GMNetworkFramework\GMNetworkFramework.Export.csproj", "{6DBDBE16-F18B-4E4C-BB53-4E0D77F1BDB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Export", "GMNetworkFramework.Export\GMNetworkFramework.Export.csproj", "{6DBDBE16-F18B-4E4C-BB53-4E0D77F1BDB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Example", "GMNetworkFramework.Example\GMNetworkFramework.Example.csproj", "{CD548818-F73B-42C6-8519-00983E41F544}"
 EndProject
