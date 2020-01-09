@@ -118,7 +118,7 @@ namespace GMNetworkFramework.Server.Security
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return Array.Empty<byte>();
                 }
