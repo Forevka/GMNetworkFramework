@@ -25,8 +25,16 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var a = SuperPow(3, 4)
+            <string>var a = Add(3, 4)
 show_debug_message(a)
+
+var b = Minus(3, 4)
+show_debug_message(b)
+
+var c = Mult(3, 4)
+show_debug_message(c)
+
+show_debug_message(StringTest("abc", "qwer"))
 </string>
           </argument>
         </arguments>
