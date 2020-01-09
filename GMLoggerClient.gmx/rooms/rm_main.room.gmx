@@ -52,6 +52,7 @@
   </views>
   <instances>
     <instance objName="test_dll" x="0" y="0" name="inst_DBD424B5" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_system" x="32" y="0" name="inst_2DA4856B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

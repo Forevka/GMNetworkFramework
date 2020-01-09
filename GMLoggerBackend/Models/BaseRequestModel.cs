@@ -35,8 +35,7 @@ namespace GMNetworkFramework.Server.Models
         
         public void ParseFlag()
         {
-            ushort _flag;
-            Buffer.Read(out _flag);
+            Buffer.Read(out ushort _flag);
             Flag = _flag;
         }
 
@@ -64,8 +63,7 @@ namespace GMNetworkFramework.Server.Models
 
         private void ParseListProperty(PropertyInfo prop)
         {
-            ushort count;
-            Buffer.Read(out count);
+            Buffer.Read(out ushort count);
 
             var elementType = prop.PropertyType.GetGenericArguments()[0];
 
@@ -76,8 +74,7 @@ namespace GMNetworkFramework.Server.Models
                 var list = new List<string>();
                 for (var i = 0; i < count; i++)
                 {
-                    string val;
-                    Buffer.Read(out val);
+                    Buffer.Read(out string val);
 
                     list.Add(val);
                 }
@@ -88,8 +85,7 @@ namespace GMNetworkFramework.Server.Models
                 var list = new List<int>();
                 for (var i = 0; i < count; i++)
                 {
-                    int val;
-                    Buffer.Read(out val);
+                    Buffer.Read(out int val);
 
                     list.Add(val);
                 }
@@ -100,8 +96,7 @@ namespace GMNetworkFramework.Server.Models
                 var list = new List<bool>();
                 for (var i = 0; i < count; i++)
                 {
-                    bool val;
-                    Buffer.Read(out val);
+                    Buffer.Read(out bool val);
 
                     list.Add(val);
                 }
@@ -124,8 +119,7 @@ namespace GMNetworkFramework.Server.Models
                 var list = new List<float>();
                 for (var i = 0; i < count; i++)
                 {
-                    float val;
-                    Buffer.Read(out val);
+                    Buffer.Read(out float val);
 
                     list.Add(val);
                 }
@@ -143,32 +137,27 @@ namespace GMNetworkFramework.Server.Models
 
             if (prop_type == typeof(string))
             {
-                string val;
-                Buffer.Read(out val);
+                Buffer.Read(out string val);
                 prop.SetValue(this, val);
             }
             else if (prop_type == typeof(int))
             {
-                int val;
-                Buffer.Read(out val);
+                Buffer.Read(out int val);
                 prop.SetValue(this, val);
             }
             else if (prop_type == typeof(bool))
             {
-                bool val;
-                Buffer.Read(out val);
+                Buffer.Read(out bool val);
                 prop.SetValue(this, val);
             }
             else if (prop_type == typeof(double))
             {
-                double val;
-                Buffer.Read(out val);
+                Buffer.Read(out double val);
                 prop.SetValue(this, val);
             }
             else if (prop_type == typeof(float))
             {
-                float val;
-                Buffer.Read(out val);
+                Buffer.Read(out float val);
                 prop.SetValue(this, val);
             }
             else

@@ -150,9 +150,9 @@ namespace GMNetworkFramework.Server.Helpers
 
                         var encrypted = ParentServer.EncryptBuffer(buffer);
 
-                        Logger.Debug("buffer after enc");
+                        /*Logger.Debug("buffer after enc");
                         foreach (var a in encrypted)
-                            Console.WriteLine(a);
+                            Console.WriteLine(a);*/
                         Logger.Debug($"LEN: {encrypted.Length}");
 
                         stream.Write(encrypted, 0, encrypted.Length);

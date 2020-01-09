@@ -94,7 +94,7 @@ namespace GMNetworkFramework.Server.Logic
                     {
                         if (!isStop)
                         {
-                            Logger.Debug($"Processing {x.GetType().Name}");
+                            //Logger.Debug($"Processing {x.GetType().Name}");
                             x.Process(model, user, socket, data);
                         }
                     }
@@ -125,8 +125,8 @@ namespace GMNetworkFramework.Server.Logic
         {
             var middlewaredForThisDispatcher = socket.myMiddlewares
                 .Where(x => x.Key == Id)
-                .Select(xx => xx.Value)
-                .SelectMany(x => x.FindAll(m =>
+                //.Select(xx => xx.Value)
+                .SelectMany(x => x.Value.FindAll(m =>
                                             m.Flags.Contains((ushort)RequestFlag.ForAll) ||
                                             m.Flags.Contains(model.Flag)));
 
@@ -178,7 +178,7 @@ namespace GMNetworkFramework.Server.Logic
                         {
                             if (!isStop)
                             {
-                                Logger.Debug($"Processing {x.GetType().Name}");
+                                //Logger.Debug($"Processing {x.GetType().Name}");
                                 x.Process(model, user, socket, data);
                             }
                         }
