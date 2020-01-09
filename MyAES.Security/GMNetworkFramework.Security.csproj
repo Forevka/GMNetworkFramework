@@ -7,8 +7,8 @@
     <ProjectGuid>{890D378D-B987-46D6-8541-92104DDE33DA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MyAES.Security</RootNamespace>
-    <AssemblyName>MyAES.Security</AssemblyName>
+    <RootNamespace>GMNetworkFramework.Security</RootNamespace>
+    <AssemblyName>GMNetworkFramework.Security</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

@@ -7,8 +7,8 @@
     <ProjectGuid>{6DBDBE16-F18B-4E4C-BB53-4E0D77F1BDB3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GMNetworkFramework</RootNamespace>
-    <AssemblyName>GMNetworkFramework</AssemblyName>
+    <RootNamespace>GMNetworkFramework.Export</RootNamespace>
+    <AssemblyName>GMNetworkFramework.Export</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
