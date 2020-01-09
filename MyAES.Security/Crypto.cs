@@ -67,6 +67,7 @@ namespace MyAES.Security
                     new PasswordDeriveBytes(password, _saltBytes, _hash, _iterations);
                 byte[] keyBytes = _passwordBytes.GetBytes(_keySize / 8);
 
+                cipher.Padding = PaddingMode.Zeros;
                 cipher.Mode = CipherMode.CBC;
 
                 using (ICryptoTransform encryptor = cipher.CreateEncryptor(keyBytes, _vectorBytes))
@@ -102,6 +103,7 @@ namespace MyAES.Security
                 PasswordDeriveBytes _passwordBytes = new PasswordDeriveBytes(password, _saltBytes, _hash, _iterations);
                 byte[] keyBytes = _passwordBytes.GetBytes(_keySize / 8);
 
+                cipher.Padding = PaddingMode.Zeros;
                 cipher.Mode = CipherMode.CBC;
 
                 try

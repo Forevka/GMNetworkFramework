@@ -82,7 +82,7 @@ namespace GMLoggerBackend.Helpers
         public void SendMessage(BaseResponseModel model)
         {
             model.ComposeBuffer();
-            WriteQueue.Enqueue(model._buffer);
+            SendMessage(model._buffer);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace GMLoggerBackend.Helpers
         /// <summary>
         /// Writes data to the client in sequence on the server.
         /// </summary>
-        public void Write(TcpClient client)
+        private void Write(TcpClient client)
         {
             while (true)
             {
@@ -145,7 +145,19 @@ namespace GMLoggerBackend.Helpers
                     {
                         BufferStream buffer = WriteQueue.Dequeue();
                         NetworkStream stream = client.GetStream();
-                        stream.Write(buffer.Memory, 0, buffer.Iterator);
+
+                        /*Logger.Debug("buffer pre enc");
+                        foreach (var a in buffer.Memory)
+                            Console.WriteLine(a);*/
+
+                        var encrypted = ParentServer.EncryptBuffer(buffer);
+
+                        Logger.Debug("buffer after enc");
+                        foreach (var a in encrypted)
+                            Console.WriteLine(a);
+                        Logger.Debug($"LEN: {encrypted.Length}");
+
+                        stream.Write(encrypted, 0, encrypted.Length);
                         stream.Flush();
                     }
                     catch (System.IO.IOException ex)
@@ -195,6 +207,10 @@ namespace GMLoggerBackend.Helpers
 
                     BufferStream readBuffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
                     stream.Read(readBuffer.Memory, 0, (int)BufferType.BufferSize);
+
+                    //var decrypted = ParentServer.DecryptBuffer(readBuffer);
+
+                    //readBuffer.ReassignMemory(decrypted);
 
                     //Read the header data.
                     BaseRequestModel model = BaseRequestModel.FromStream(readBuffer);

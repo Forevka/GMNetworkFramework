@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GMLoggerBackend.Enums;
+using GMLoggerBackend.Utils;
+using MyAES.Security;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,8 +36,14 @@ namespace GMLoggerClientTest
                 tcpclnt.Connect("127.0.0.1", 10103);
                 // use the ipaddress as in the server program
 
+                string salt = "aselrias38490a32";
+                string vector = "8947az34awl34kjq";
+
+                string pass = "abcde";
+
+                var c = new MyAesCrypto(pass, salt, vector);
+
                 Console.WriteLine("Connected");
-                Console.Write("Enter the string to be transmitted : ");
 
                 Stream stm = tcpclnt.GetStream();
 
@@ -52,13 +61,22 @@ namespace GMLoggerClientTest
                 var full_buf = Combine(flag, word_count, ba1, ba2, ba3);
 
                 stm.Write(full_buf, 0, full_buf.Length);
+                stm.Flush();
                 //stm.Write(ba, flag.Length - 1, ba.Count());
 
-                byte[] bb = new byte[256];
-                int k = stm.Read(bb, 0, 100);
+                BufferStream readBuffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
+                stm.Read(readBuffer.Memory, 0, (int)BufferType.BufferSize);
 
-                for (int i = 0; i < k; i++)
-                    Console.Write(Convert.ToChar(bb[i]));
+                //MemoryStream s = new MemoryStream();
+                //s.Write(bb, 0, bb.Length);
+
+                /*for (int i = 0; i < k; i++)
+                    Console.Write(Convert.ToChar(bb[i]));*/
+
+                //readBuffer.ReassignMemory(c.Decrypt(readBuffer.Memory));
+
+                readBuffer.Read(out ushort flag_);
+                Console.WriteLine(flag_);
 
                 tcpclnt.Close();
             }

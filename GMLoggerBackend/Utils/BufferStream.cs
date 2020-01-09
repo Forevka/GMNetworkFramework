@@ -120,6 +120,11 @@ namespace GMLoggerBackend.Utils
             iterator = 0;
         }
 
+        public void ReassignMemory(byte[] mem)
+        {
+            memory = mem;
+        }
+
         /// <summary>
         /// Sets all elements in this buffer to 0.
         /// </summary>

@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\CryptoHelper.cs" />
+    <Compile Include="Utils\ICrypto.cs" />
     <Compile Include="Utils\BufferStream.cs" />
     <Compile Include="Logic\Dispatcher.cs" />
     <Compile Include="Enum\BufferType.cs" />
@@ -88,6 +90,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyAES.Security\MyAES.Security.csproj">
+      <Project>{890D378D-B987-46D6-8541-92104DDE33DA}</Project>
+      <Name>MyAES.Security</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

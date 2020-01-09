@@ -52,5 +52,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GMLoggerBackend\GMLoggerBackend.csproj">
+      <Project>{2FCFB8BF-2C28-42A3-88DC-7C8D5EA46237}</Project>
+      <Name>GMLoggerBackend</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyAES.Security\MyAES.Security.csproj">
+      <Project>{890D378D-B987-46D6-8541-92104DDE33DA}</Project>
+      <Name>MyAES.Security</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

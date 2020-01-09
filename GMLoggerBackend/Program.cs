@@ -6,6 +6,7 @@ using NLog.Fluent;
 using System;
 using System.Globalization;
 using GMLoggerBackend.Logic;
+using GMLoggerBackend.Helpers;
 
 namespace GMLoggerBackend
 {
@@ -13,6 +14,13 @@ namespace GMLoggerBackend
     {
         static void Main(string[] args)
         {
+            string salt = "aselrias38490a32";
+            string vector = "8947az34awl34kjq";
+
+            string pass = "abcde";
+
+            //Encoding utf8 = Encoding.UTF8;
+
             CultureInfo.CurrentCulture = new CultureInfo("en-US", false);
 
             Console.WriteLine("Configuring Logger");
@@ -20,6 +28,9 @@ namespace GMLoggerBackend
             Console.WriteLine("Starting Server...");
 
             Server server = new Server();
+
+            //server.SetCryptoPolicy(new CryptoHelper(pass, salt, vector));
+            //server.InitializeCrypto(pass, true);
 
             Logger.Debug($"Started at {DateTime.UtcNow}");
 

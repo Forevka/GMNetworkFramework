@@ -20,10 +20,12 @@ namespace GMLoggerBackend.Logic
         public List<SocketHelper> SearchingClients;
         public Thread TCPThread;
         public Thread PingThread;
-        public Thread MatchmakingThread;
         public TcpListener TCPListener = null;
 
+        public bool isCryptEnabled = false;
+
         private Dispatcher mainDispatcher;
+        private ICrypto crypto;
 
         public void SetMainDispatcher(Dispatcher dispatcher)
         {
@@ -73,7 +75,7 @@ namespace GMLoggerBackend.Logic
 
             TCPThread.Abort();
             PingThread.Abort();
-            MatchmakingThread.Abort();
+            //MatchmakingThread.Abort();
 
             foreach (SocketHelper client in Clients)
             {
@@ -114,6 +116,44 @@ namespace GMLoggerBackend.Logic
             }
         }
 
+        public void InitializeCrypto(string password, bool enable)
+        {
+            isCryptEnabled = enable;
+
+            if (!crypto.Initialized)
+                crypto.Initialize(password);
+        }
+
+        public byte[] EncryptBuffer(BufferStream buffer)
+        {
+            if (isCryptEnabled)
+                return crypto.EncryptBuffer(buffer.Memory);
+
+            return buffer.Memory;
+        }
+
+        public byte[] DecryptBuffer(BufferStream buffer)
+        {
+            if (isCryptEnabled)
+                return crypto.DecryptBuffer(buffer.Memory);
+
+            return buffer.Memory;
+        }
+
+        public void SetCryptoPolicy(ICrypto crypto)
+        {
+            this.crypto = crypto;
+        }
+
+        public void EnableCryptoPolicy()
+        {
+            isCryptEnabled = true;
+        }
+
+        public void DisableCryptoPolicy()
+        {
+            isCryptEnabled = false;
+        }
 
         /// <summary>
         /// Listens for clients and starts threads to handle them.
