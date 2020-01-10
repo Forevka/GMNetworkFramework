@@ -54,12 +54,12 @@
     <Compile Include="Middlewares\MiddlewareLogTime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Request\LogModelRequest.cs" />
-    <Compile Include="Request\NewConnectionModelRequest.cs" />
-    <Compile Include="Request\PingModelRequest.cs" />
-    <Compile Include="Response\LogModelResponse.cs" />
-    <Compile Include="Response\PingModelResponse.cs" />
-    <Compile Include="Response\PlayersCountModelResponse.cs" />
+    <Compile Include="Models\Request\LogModelRequest.cs" />
+    <Compile Include="Models\Request\NewConnectionModelRequest.cs" />
+    <Compile Include="Models\Request\PingModelRequest.cs" />
+    <Compile Include="Models\Response\LogModelResponse.cs" />
+    <Compile Include="Models\Response\PingModelResponse.cs" />
+    <Compile Include="Models\Response\PlayersCountModelResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -70,5 +70,6 @@
       <Name>GMNetworkFramework.Server</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

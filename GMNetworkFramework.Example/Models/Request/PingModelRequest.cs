@@ -1,5 +1,5 @@
-﻿using GMNetworkFramework.Server.Utils.Attributes;
-using GMNetworkFramework.Server.Models;
+﻿using GMNetworkFramework.Server.Models;
+using GMNetworkFramework.Server.Utils.Attributes;
 
 namespace GMNetworkFramework.Example.Models.Request
 {

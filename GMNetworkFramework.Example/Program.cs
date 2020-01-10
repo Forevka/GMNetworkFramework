@@ -1,15 +1,12 @@
-﻿using GMNetworkFramework.Server.Enums;
-using GMNetworkFramework.Server.Handlers;
+﻿using GMNetworkFramework.Example.Enum;
+using GMNetworkFramework.Example.Handlers;
+using GMNetworkFramework.Example.Middlewares;
+using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Logic;
 using GMNetworkFramework.Server.Utils;
-using GMNetworkFramework.Server.Middlewares;
 //using NLog.Fluent;
 using System;
 using System.Globalization;
-using GMNetworkFramework.Server.Logic;
-using GMNetworkFramework.Server.Helpers;
-using GMNetworkFramework.Example.Middlewares;
-using GMNetworkFramework.Example.Handlers;
-using GMNetworkFramework.Example.Enum;
 
 namespace GMNetworkFramework.Example
 {
@@ -30,7 +27,7 @@ namespace GMNetworkFramework.Example
             Logger.Config();
             Console.WriteLine("Starting Server...");
 
-            TCPServer server = new TCPServer();
+            var server = new TcpServer();
 
             //server.SetCryptoPolicy(new CryptoHelper(pass, salt, vector));
             //server.InitializeCrypto(pass, true);

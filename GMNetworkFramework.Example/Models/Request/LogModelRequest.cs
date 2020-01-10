@@ -1,6 +1,6 @@
-﻿using GMNetworkFramework.Server.Models;
+﻿using System.Collections.Generic;
+using GMNetworkFramework.Server.Models;
 using GMNetworkFramework.Server.Utils.Attributes;
-using System.Collections.Generic;
 
 namespace GMNetworkFramework.Example.Models.Request
 {

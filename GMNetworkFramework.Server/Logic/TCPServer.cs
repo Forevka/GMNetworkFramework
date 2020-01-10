@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace GMNetworkFramework.Server.Logic
 {
-    public class TCPServer
+    public class TcpServer
     {
         public static ManualResetEvent tcpClientConnected = new ManualResetEvent(false);
 
