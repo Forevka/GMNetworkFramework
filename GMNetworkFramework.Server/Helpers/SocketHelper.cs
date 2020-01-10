@@ -26,6 +26,8 @@ namespace GMNetworkFramework.Server.Helpers
         private Dispatcher _dispatcher;
         public Dictionary<Guid, List<IMiddleware>> myMiddlewares;
 
+        private int disconnectCounter = 0; //if = 3 then user is disconnected
+
         /// <summary>
         /// Starts the given client in two threads for reading and writing.
         /// </summary>
@@ -202,7 +204,8 @@ namespace GMNetworkFramework.Server.Helpers
                     NetworkStream stream = client.GetStream();
 
                     BufferStream readBuffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
-                    stream.Read(readBuffer.Memory, 0, (int)BufferType.BufferSize);
+                    
+                    stream.Read(readBuffer.Memory, 0, (int) BufferType.BufferSize);
 
                     //var decrypted = ParentServer.DecryptBuffer(readBuffer);
 
@@ -212,7 +215,23 @@ namespace GMNetworkFramework.Server.Helpers
                     BaseRequestModel model = BaseRequestModel.FromStream(readBuffer);
                     model.ParseFlag();
 
+                    if (model.Flag == 0)
+                    {
+                        Logger.Debug($"Counter {disconnectCounter}");
+                        if (disconnectCounter++ >= 3)
+                        {
+                            DisconnectClient();
+                            break;
+                        }
+                    }
+
                     _dispatcher.Handle(model, Me, this);
+                }
+                catch (SocketException ex)
+                {
+                    Logger.Error(ex);
+                    DisconnectClient();
+                    break;
                 }
                 catch (System.IO.IOException ex)
                 {
