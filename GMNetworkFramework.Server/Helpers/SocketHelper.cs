@@ -20,7 +20,7 @@ namespace GMNetworkFramework.Server.Helpers
         public Thread WriteThread;
         private Thread AbortThread;
         public TcpClient MscClient;
-        public TCPServer ParentServer;
+        public TcpServer ParentServer;
         public UserModel Me;
 
         private Dispatcher _dispatcher;
@@ -29,7 +29,7 @@ namespace GMNetworkFramework.Server.Helpers
         /// <summary>
         /// Starts the given client in two threads for reading and writing.
         /// </summary>
-        public void StartClient(TcpClient client, TCPServer server, Dispatcher dispatcher)
+        public void StartClient(TcpClient client, TcpServer server, Dispatcher dispatcher)
         {
             //Sets client variable.
             MscClient = client;

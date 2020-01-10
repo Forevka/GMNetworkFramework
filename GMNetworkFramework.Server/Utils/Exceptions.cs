@@ -16,4 +16,11 @@ namespace GMNetworkFramework.Server.Exceptions
         {
         }
     }
+
+    class MainDispatcherNotFound : Exception, ISerializable
+    {
+        public MainDispatcherNotFound(string message) : base(message)
+        {
+        }
+    }
 }

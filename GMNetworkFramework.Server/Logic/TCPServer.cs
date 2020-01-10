@@ -1,4 +1,5 @@
 ﻿using GMNetworkFramework.Server.Enums;
+using GMNetworkFramework.Server.Exceptions;
 using GMNetworkFramework.Server.Helpers;
 using GMNetworkFramework.Server.Security;
 using GMNetworkFramework.Server.Utils;
@@ -43,6 +44,9 @@ namespace GMNetworkFramework.Server.Logic
         /// </summary>
         public void StartServer(int tcpPort)
         {
+            if (mainDispatcher == null)
+                throw new MainDispatcherNotFound("Use method SetMainDispatcher before StartServer");
+
             //Creates a client list.
             Clients = new List<SocketHelper>();
             SearchingClients = new List<SocketHelper>();
