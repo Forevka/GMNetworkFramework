@@ -28,10 +28,12 @@ namespace GMLoggerClientTest
 
         public static void Test2()
         {
+            Main.OpenConsole();
             Main.Log("asd", 30);
             Main.Log("qwe", 31);
             Main.LogLine("qwqwee", 39);
             Main.LogLine("qwqwee", 40);
+
             Console.WriteLine("Hello!");
         }
 

@@ -38,7 +38,7 @@ namespace GMNetworkFramework.Export
             return a + b;
         }
 
-        [DllImport("kernel32")]
+        [DllImport("kernel32.dll")]
         public static extern bool AllocConsole();
 
         [DllExport]
