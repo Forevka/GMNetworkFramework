@@ -1,9 +1,5 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMNetworkFramework.Server.Utils
 {
@@ -29,10 +25,10 @@ namespace GMNetworkFramework.Server.Utils
             // Rules for mapping loggers to targets            
             config.AddRuleForAllLevels(logconsole);
             config.AddRuleForAllLevels(logfile);
-            
+
 
             // Apply config           
-            NLog.LogManager.Configuration = config;
+            LogManager.Configuration = config;
         }
 
         public static void Debug(string msg)

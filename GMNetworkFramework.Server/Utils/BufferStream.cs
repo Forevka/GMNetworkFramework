@@ -1,4 +1,5 @@
-﻿using GMNetworkFramework.Server.Enums;
+﻿using System.Collections.Generic;
+using GMNetworkFramework.Server.Enums;
 using System.Runtime.CompilerServices;
 using Array = System.Array;
 using BitConverter = System.BitConverter;
@@ -334,8 +335,8 @@ namespace GMNetworkFramework.Server.Utils
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(string value)
         {
-            byte[] bytes = Encoding.ASCII.GetBytes((string)value);
-            for (int i = 0; i < bytes.Length; i++) { memory[iterator++] = bytes[i]; }
+            var bytes = Encoding.ASCII.GetBytes(value);
+            for (var i = 0; i < bytes.Length; i++) { memory[iterator++] = bytes[i]; }
             memory[iterator++] = 0;
             iterator = (iterator + fastAlign) & fastAlignNot;
         }
@@ -358,7 +359,7 @@ namespace GMNetworkFramework.Server.Utils
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Read(out bool value)
         {
-            value = memory[iterator++] >= 0;
+            value = memory[iterator++] > 0;
             iterator = (iterator + fastAlign) & fastAlignNot;
         }
 

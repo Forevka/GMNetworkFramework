@@ -1,31 +1,27 @@
-﻿using GMNetworkFramework.Server.Utils;
-using GMNetworkFramework.Server.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GMNetworkFramework.Server.Security;
 
 namespace GMNetworkFramework.Server.Helpers
 {
-    class CryptoHelper : MyAesCrypto, ICrypto
+    class CryptoHelper : ICrypto
     {
         public bool Initialized { get; set; } = false;
 
-        public CryptoHelper(string password, string salt, string vector)
-            : base(password, salt, vector)
-        {
+        private MyAesCrypto crypto;
 
+        public CryptoHelper(string password, string salt, string vector)
+            //: base(password, salt, vector)
+        {
+            crypto = new MyAesCrypto(password, salt, vector);
         }
 
         public byte[] DecryptBuffer(byte[] value)
         {
-            return base.Decrypt(value);
+            return crypto.Decrypt(value);
         }
 
         public byte[] EncryptBuffer(byte[] value)
         {
-            return base.Encrypt(value);
+            return crypto.Encrypt(value);
         }
 
         public void Initialize(string password)

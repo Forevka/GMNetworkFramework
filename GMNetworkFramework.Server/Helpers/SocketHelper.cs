@@ -65,7 +65,7 @@ namespace GMNetworkFramework.Server.Helpers
         public void SendMessageToAll(BaseResponseModel model)
         {
             model.ComposeBuffer();
-            ParentServer.SendToAllClients(model._buffer);
+            ParentServer.SendToAllClients(model.Buffer);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace GMNetworkFramework.Server.Helpers
         public void SendMessage(BaseResponseModel model)
         {
             model.ComposeBuffer();
-            SendMessage(model._buffer);
+            SendMessage(model.Buffer);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace GMNetworkFramework.Server.Helpers
                         Logger.Error(ex);
                         break;
                     }
-                    catch (System.InvalidOperationException ex)
+                    catch (InvalidOperationException ex)
                     {
                         Logger.Error(ex);
                         break;

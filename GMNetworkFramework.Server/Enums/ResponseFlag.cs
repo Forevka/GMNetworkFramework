@@ -2,6 +2,6 @@
 {
     public enum ResponseFlag : ushort
     {
-        undefined = 0,
+        Undefined = 0,
     }
 }

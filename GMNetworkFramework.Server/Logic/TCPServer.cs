@@ -16,9 +16,9 @@ namespace GMNetworkFramework.Server.Logic
 
         public List<SocketHelper> Clients;
         public List<SocketHelper> SearchingClients;
-        public Thread TCPThread;
+        public Thread TcpThread;
         public Thread PingThread;
-        public TcpListener TCPListener = null;
+        public TcpListener TcpListener = null;
 
         public bool isCryptEnabled = false;
 
@@ -48,11 +48,11 @@ namespace GMNetworkFramework.Server.Logic
             SearchingClients = new List<SocketHelper>();
 
             //Starts a listen thread to listen for connections.
-            TCPThread = new Thread(new ThreadStart(delegate
+            TcpThread = new Thread(new ThreadStart(delegate
             {
                 Listen(tcpPort);
             }));
-            TCPThread.Start();
+            TcpThread.Start();
             Console.WriteLine("Listen thread started.");
 
             //Starts a ping thread to keep connection alive.
@@ -64,14 +64,14 @@ namespace GMNetworkFramework.Server.Logic
             Console.WriteLine("Ping thread started.");
         }
 
-        // <summary>
+        /// <summary>
         /// Stops the server from running.
         /// </summary>
         public void StopServer()
         {
-            TCPListener.Stop();
+            TcpListener.Stop();
 
-            TCPThread.Abort();
+            TcpThread.Abort();
             PingThread.Abort();
             //MatchmakingThread.Abort();
 
@@ -156,16 +156,16 @@ namespace GMNetworkFramework.Server.Logic
         /// <summary>
         /// Listens for clients and starts threads to handle them.
         /// </summary>
-        async private void Listen(int port)
+        private async void Listen(int port)
         {
-            TCPListener = new TcpListener(IPAddress.Any, port);
-            TCPListener.Start();
+            TcpListener = new TcpListener(IPAddress.Any, port);
+            TcpListener.Start();
 
             while (true)
             {
                 try
                 {
-                    var tcpClient = await TCPListener.AcceptTcpClientAsync();
+                    var tcpClient = await TcpListener.AcceptTcpClientAsync();
                     SocketHelper helper = new SocketHelper
                     {
                         Me = new Models.UserModel()
@@ -176,7 +176,7 @@ namespace GMNetworkFramework.Server.Logic
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, ex.Message.ToString());
+                    Logger.Error(ex, ex.Message);
                 }
             }
         }

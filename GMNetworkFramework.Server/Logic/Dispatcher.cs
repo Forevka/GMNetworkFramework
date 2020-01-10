@@ -1,6 +1,6 @@
-﻿using GMNetworkFramework.Server.Handlers;
-using GMNetworkFramework.Server.Enums;
+﻿using GMNetworkFramework.Server.Enums;
 using GMNetworkFramework.Server.Exceptions;
+using GMNetworkFramework.Server.Handlers;
 using GMNetworkFramework.Server.Helpers;
 using GMNetworkFramework.Server.Middlewares;
 using GMNetworkFramework.Server.Models;
@@ -8,20 +8,16 @@ using GMNetworkFramework.Server.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMNetworkFramework.Server.Logic
 {
     public class Dispatcher
     {
-        public bool isWorking = true;
+        public bool IsEnabled = true;
         public string Name;
 
         private Dictionary<ushort, List<IHandler>> Handlers = new Dictionary<ushort, List<IHandler>>();
         private List<Type> MiddlewaresABC = new List<Type>();
-
-        private List<IMiddleware> Middlewares = new List<IMiddleware>();
 
         private SortedList<int, Dispatcher> slavesDispatchers = new SortedList<int, Dispatcher>();
         public Guid Id = Guid.NewGuid();
@@ -34,9 +30,7 @@ namespace GMNetworkFramework.Server.Logic
 
         public void RegisterHandler(ushort flag, IHandler handler)
         {
-            List<IHandler> hList = null;
-
-            if (Handlers.TryGetValue(flag, out hList))
+            if (Handlers.TryGetValue(flag, out List<IHandler> hList))
                 hList.Add(handler);
             else
             {
@@ -123,7 +117,7 @@ namespace GMNetworkFramework.Server.Logic
 
         private bool Invoke(BaseRequestModel model, UserModel user, SocketHelper socket, Dictionary<string, string> data)
         {
-            var middlewaredForThisDispatcher = socket.myMiddlewares
+            var middlewaresForThisDispatcher = socket.myMiddlewares
                 .Where(x => x.Key == Id)
                 //.Select(xx => xx.Value)
                 .SelectMany(x => x.Value.FindAll(m =>
@@ -132,7 +126,7 @@ namespace GMNetworkFramework.Server.Logic
 
 
             //Logger.Debug($"{Name} PreProcess midlewares start");
-            foreach (var middleware in middlewaredForThisDispatcher)
+            foreach (var middleware in middlewaresForThisDispatcher)
             {
                 middleware.PreProcess(model, user, socket, data);
             }
@@ -143,7 +137,7 @@ namespace GMNetworkFramework.Server.Logic
             //Logger.Debug($"{Name} Handlers finish");
 
             //Logger.Debug($"{Name} PostProcess midlewares start");
-            foreach (var middleware in middlewaredForThisDispatcher)
+            foreach (var middleware in middlewaresForThisDispatcher)
             {
                 middleware.PostProcess(model, user, socket, data);
             }
@@ -159,7 +153,7 @@ namespace GMNetworkFramework.Server.Logic
 
             var handled = Invoke(model, user, socket, data);
 
-            foreach (var disp in slavesDispatchers.Values.Where(x => x.isWorking == true))
+            foreach (var disp in slavesDispatchers.Values.Where(x => x.IsEnabled))
             {
                 //Logger.Debug($"{Name} dispatcher is proccessing");
                 handled = disp.Invoke(model, user, socket, data);

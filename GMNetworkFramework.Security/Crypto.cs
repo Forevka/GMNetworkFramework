@@ -17,9 +17,6 @@ namespace GMNetworkFramework.Server.Security
 
         private Encoding myEncoding = Encoding.UTF8;
 
-        private string _salt; // Random
-        private string _vector; // Random
-
         private byte[] _saltBytes;
         private byte[] _vectorBytes;
 
@@ -33,9 +30,6 @@ namespace GMNetworkFramework.Server.Security
 
             _password = password;
 
-            _salt = salt;
-            _vector = vector;
-
             _saltBytes = myEncoding.GetBytes(salt.ToArray());
             _vectorBytes = myEncoding.GetBytes(vector.ToArray());
         }
@@ -43,9 +37,6 @@ namespace GMNetworkFramework.Server.Security
         public MyAesCrypto(string password, string salt, string vector)
         {
             _password = password;
-
-            _salt = salt;
-            _vector = vector;
 
             _saltBytes = myEncoding.GetBytes(salt.ToArray());
             _vectorBytes = myEncoding.GetBytes(vector.ToArray());

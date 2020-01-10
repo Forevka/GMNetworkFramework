@@ -1,6 +1,5 @@
 ﻿using GMNetworkFramework.Server.Enums;
 using GMNetworkFramework.Server.Utils;
-using GMNetworkFramework.Server.Utils.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +9,24 @@ namespace GMNetworkFramework.Server.Models
 {
     public class BaseResponseModel : PropertyFinderMixine
     {
-        public BufferStream _buffer { get; set; }
+        public BufferStream Buffer { get; set; }
 
         public ushort Flag { get; set; } = 0;
 
-        public RequestFlag requestFlag { get { return (RequestFlag)Flag; } }
-
-        public static T Model<T>(ushort _flag) where T : BaseResponseModel, new()
+        public static T Model<T>(ushort flag) where T : BaseResponseModel, new()
         {
-            T new_model = new T();
+            var newModel = new T
+            {
+                Flag = flag,
 
-            new_model.Flag = _flag;
+                Buffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment)
+            };
 
-            new_model._buffer = new BufferStream(BufferType.BufferSize, BufferType.BufferAlignment);
-            new_model._buffer.Seek(0);
+            newModel.Buffer.Seek(0);
 
-            new_model.Write(_flag);
+            newModel.Write(flag);
 
-            return new_model;
+            return newModel;
         }
 
         public void ComposeBuffer()
@@ -36,12 +35,12 @@ namespace GMNetworkFramework.Server.Models
 
             foreach (var prop in thisProps.OrderBy(x => x.Key))
             {
-                Type prop_type = prop.Value.PropertyType;
-                Console.WriteLine(prop_type.Name);
+                Type propType = prop.Value.PropertyType;
+                Console.WriteLine(propType.Name);
                 
                 if (IsEnumerable(prop.Value))
                 {
-                    Logger.Warn($"Found list of {prop_type.Name} in {prop.Value.Name}");
+                    Logger.Warn($"Found list of {propType.Name} in {prop.Value.Name}");
 
                     ComposeListProperty(prop.Value);
                 }
@@ -58,19 +57,80 @@ namespace GMNetworkFramework.Server.Models
 
             Logger.Warn($"Generic type {elementType.Name}");
 
+
             if (elementType == typeof(string))
             {
-                var collection = prop.GetValue(this) as List<string>;
+                if (!(prop.GetValue(this) is List<string> collection)) return;
 
-                ushort count = (ushort)collection.Count;
+                var count = (ushort)collection.Count;
 
                 Logger.Warn($"Count {count}");
 
-                _buffer.Write(count);
+                Buffer.Write(count);
 
                 foreach(var val in collection)
                 {
-                    _buffer.Write(val);
+                    Buffer.Write(val);
+                }
+            }
+            else if (elementType == typeof(double))
+            {
+                if (!(prop.GetValue(this) is List<double> collection)) return;
+
+                var count = (ushort)collection.Count;
+
+                Logger.Warn($"Count {count}");
+
+                Buffer.Write(count);
+
+                foreach (var val in collection)
+                {
+                    Buffer.Write(val);
+                }
+            }
+            else if (elementType == typeof(int))
+            {
+                if (!(prop.GetValue(this) is List<int> collection)) return;
+
+                var count = (ushort)collection.Count;
+
+                Logger.Warn($"Count {count}");
+
+                Buffer.Write(count);
+
+                foreach (var val in collection)
+                {
+                    Buffer.Write(val);
+                }
+            }
+            else if (elementType == typeof(bool))
+            {
+                if (!(prop.GetValue(this) is List<bool> collection)) return;
+
+                var count = (ushort)collection.Count;
+
+                Logger.Warn($"Count {count}");
+
+                Buffer.Write(count);
+
+                foreach (var val in collection)
+                {
+                    Buffer.Write(val);
+                }
+            }
+            else if (elementType == typeof(float))
+            {
+                if (!(prop.GetValue(this) is List<float> collection)) return;
+
+                var count = (ushort)collection.Count;
+
+                Logger.Warn($"Count {count}");
+
+                Buffer.Write(count);
+
+                foreach (var val in collection)
+                {
+                    Buffer.Write(val);
                 }
             }
         }
@@ -79,27 +139,27 @@ namespace GMNetworkFramework.Server.Models
         {
             if (prop.PropertyType == typeof(string))
             {
-                _buffer.Write((string)prop.GetValue(this));
+                Buffer.Write((string)prop.GetValue(this));
             }
             else if (prop.PropertyType == typeof(int))
             {
-                _buffer.Write((int)prop.GetValue(this));
+                Buffer.Write((int)prop.GetValue(this));
             }
             else if (prop.PropertyType == typeof(bool))
             {
-                _buffer.Write((bool)prop.GetValue(this));
+                Buffer.Write((bool)prop.GetValue(this));
             }
             else if (prop.PropertyType == typeof(double))
             {
-                _buffer.Write((double)prop.GetValue(this));
+                Buffer.Write((double)prop.GetValue(this));
             }
             else if (prop.PropertyType == typeof(float))
             {
-                _buffer.Write((float)prop.GetValue(this));
+                Buffer.Write((float)prop.GetValue(this));
             }
             else
             {
-                Logger.Warn($"Doesnt exist case for {prop.Name} on Response");
+                Logger.Warn($"Doesn't exist case for {prop.Name} on Response");
             }
         }
 
@@ -110,7 +170,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(bool value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -120,7 +180,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(byte value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -130,7 +190,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(sbyte value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -140,7 +200,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(ushort value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -150,7 +210,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(short value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -160,7 +220,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(uint value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -170,7 +230,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(int value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -180,7 +240,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(float value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -190,7 +250,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(double value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -200,7 +260,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(string value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
 
         /// <summary>
@@ -210,7 +270,7 @@ namespace GMNetworkFramework.Server.Models
         /// <exception cref="System.IndexOutOfRangeException"/>
         public void Write(byte[] value)
         {
-            this._buffer.Write(value);
+            this.Buffer.Write(value);
         }
     }
 }

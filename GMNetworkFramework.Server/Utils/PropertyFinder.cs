@@ -1,11 +1,8 @@
 ﻿using GMNetworkFramework.Server.Utils.Attributes;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMNetworkFramework.Server.Utils
 {
@@ -19,13 +16,13 @@ namespace GMNetworkFramework.Server.Utils
 
             foreach (var prop in props)
             {
-                System.Attribute[] attrs = System.Attribute.GetCustomAttributes(prop, typeof(Position));
+                var attrs = System.Attribute.GetCustomAttributes(prop, typeof(Position));
 
-                foreach (System.Attribute attr in attrs)
+                foreach (var attr in attrs)
                 {
-                    Position p = (Position)attr;
+                    var p = (Position)attr;
 
-                    thisProps.Add(p.pos, prop);
+                    thisProps.Add(p.Pos, prop);
                 }
             }
 

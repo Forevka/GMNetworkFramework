@@ -1,8 +1,5 @@
-﻿using GMNetworkFramework.Server.Enums;
-using GMNetworkFramework.Server.Utils;
-using GMNetworkFramework.Server.Utils.Attributes;
+﻿using GMNetworkFramework.Server.Utils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,26 +14,28 @@ namespace GMNetworkFramework.Server.Models
         
         public static BaseRequestModel FromStream(BufferStream buffer)
         {
-            var m = new BaseRequestModel();
-            m.Buffer = buffer.CloneBufferStream();
-
-            return m;
+            return new BaseRequestModel
+            {
+                Buffer = buffer.CloneBufferStream()
+            };
         }
 
         public T ToModel<T>() where T: BaseRequestModel, new()
         {
-            T new_model = new T();
+            var newModel = new T
+            {
+                Buffer = Buffer.CloneBufferStream()
+            };
 
-            new_model.Buffer = Buffer.CloneBufferStream();
-            new_model.ParseBuffer();
+            newModel.ParseBuffer();
 
-            return new_model;
+            return newModel;
         }
         
         public void ParseFlag()
         {
-            Buffer.Read(out ushort _flag);
-            Flag = _flag;
+            Buffer.Read(out ushort flag);
+            Flag = flag;
         }
 
         public void ParseBuffer()
@@ -45,12 +44,12 @@ namespace GMNetworkFramework.Server.Models
 
             foreach (var prop in thisProps.OrderBy(x => x.Key))
             {
-                Type prop_type = prop.Value.PropertyType;
-                Console.WriteLine(prop_type.Name);
+                Type propType = prop.Value.PropertyType;
+                Console.WriteLine(propType.Name);
 
                 if (IsEnumerable(prop.Value))
                 {
-                    Logger.Warn($"Found list of {prop_type.Name} in {prop.Value.Name}");
+                    Logger.Warn($"Found list of {propType.Name} in {prop.Value.Name}");
 
                     ParseListProperty(prop.Value);
                 }
@@ -107,8 +106,7 @@ namespace GMNetworkFramework.Server.Models
                 var list = new List<double>();
                 for (var i = 0; i < count; i++)
                 {
-                    double val;
-                    Buffer.Read(out val);
+                    Buffer.Read(out double val);
 
                     list.Add(val);
                 }
@@ -127,42 +125,42 @@ namespace GMNetworkFramework.Server.Models
             }
             else
             {
-                Logger.Warn($"Doesnt exist case for {prop.Name} on Request");
+                Logger.Warn($"Doesn't exist case for {prop.Name} on Request");
             }
         }
 
         private void ParseOneProperty(PropertyInfo prop)
         {
-            var prop_type = prop.PropertyType;
+            var propType = prop.PropertyType;
 
-            if (prop_type == typeof(string))
+            if (propType == typeof(string))
             {
                 Buffer.Read(out string val);
                 prop.SetValue(this, val);
             }
-            else if (prop_type == typeof(int))
+            else if (propType == typeof(int))
             {
                 Buffer.Read(out int val);
                 prop.SetValue(this, val);
             }
-            else if (prop_type == typeof(bool))
+            else if (propType == typeof(bool))
             {
                 Buffer.Read(out bool val);
                 prop.SetValue(this, val);
             }
-            else if (prop_type == typeof(double))
+            else if (propType == typeof(double))
             {
                 Buffer.Read(out double val);
                 prop.SetValue(this, val);
             }
-            else if (prop_type == typeof(float))
+            else if (propType == typeof(float))
             {
                 Buffer.Read(out float val);
                 prop.SetValue(this, val);
             }
             else
             {
-                Logger.Warn($"Doesnt exist case for {prop.Name} on Request");
+                Logger.Warn($"Doesn't exist case for {prop.Name} on Request");
             }
         }
     }
