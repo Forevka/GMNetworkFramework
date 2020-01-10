@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using GMNetworkFramework.Export;
 
 namespace GMLoggerClientTest
 {
@@ -15,13 +16,24 @@ namespace GMLoggerClientTest
     {
         static void Main(string[] args)
         {
-            client.Test();
+            //client.Test();
+            client.Test2();
+            Console.ReadLine();
         }
     }
 
 
     public class client
     {
+
+        public static void Test2()
+        {
+            Main.Log("asd", 30);
+            Main.Log("qwe", 31);
+            Main.LogLine("qwqwee", 39);
+            Main.LogLine("qwqwee", 40);
+            Console.WriteLine("Hello!");
+        }
 
         public static void Test()
         {
@@ -70,8 +82,6 @@ namespace GMLoggerClientTest
                 //MemoryStream s = new MemoryStream();
                 //s.Write(bb, 0, bb.Length);
 
-                /*for (int i = 0; i < k; i++)
-                    Console.Write(Convert.ToChar(bb[i]));*/
 
                 //readBuffer.ReassignMemory(c.Decrypt(readBuffer.Memory));
 

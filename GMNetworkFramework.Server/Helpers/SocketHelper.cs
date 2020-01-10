@@ -137,55 +137,53 @@ namespace GMNetworkFramework.Server.Helpers
             while (true)
             {
                 Thread.Sleep(10);
-                if (WriteQueue.Count != 0)
+                if (WriteQueue.Count == 0) continue;
+                try
                 {
-                    try
-                    {
-                        BufferStream buffer = WriteQueue.Dequeue();
-                        NetworkStream stream = client.GetStream();
+                    BufferStream buffer = WriteQueue.Dequeue();
+                    NetworkStream stream = client.GetStream();
 
-                        /*Logger.Debug("buffer pre enc");
+                    /*Logger.Debug("buffer pre enc");
                         foreach (var a in buffer.Memory)
                             Console.WriteLine(a);*/
 
-                        var encrypted = ParentServer.EncryptBuffer(buffer);
+                    var encrypted = ParentServer.EncryptBuffer(buffer);
 
-                        /*Logger.Debug("buffer after enc");
+                    /*Logger.Debug("buffer after enc");
                         foreach (var a in encrypted)
                             Console.WriteLine(a);*/
-                        Logger.Debug($"LEN: {encrypted.Length}");
+                    Logger.Debug($"LEN: {encrypted.Length}");
 
-                        stream.Write(encrypted, 0, encrypted.Length);
-                        stream.Flush();
-                    }
-                    catch (System.IO.IOException ex)
-                    {
-                        Logger.Error(ex);
-                        DisconnectClient();
-                        break;
-                    }
-                    catch (NullReferenceException ex)
-                    {
-                        Logger.Error(ex);
-                        DisconnectClient();
-                        break;
-                    }
-                    catch (ObjectDisposedException ex)
-                    {
-                        Logger.Error(ex);
-                        break;
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        Logger.Error(ex);
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        DisconnectClient();
-                        break;
-                    }
+                    stream.Write(encrypted, 0, encrypted.Length);
+                    stream.Flush();
+                }
+                catch (System.IO.IOException ex)
+                {
+                    Logger.Error(ex);
+                    DisconnectClient();
+                    break;
+                }
+                catch (NullReferenceException ex)
+                {
+                    Logger.Error(ex);
+                    DisconnectClient();
+                    break;
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    Logger.Error(ex);
+                    break;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Logger.Error(ex);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    DisconnectClient();
+                    break;
                 }
             }
         }
