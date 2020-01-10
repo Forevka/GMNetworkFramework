@@ -40,6 +40,8 @@ namespace GMNetworkFramework.Example
 
             disp.RegisterHandler((ushort)RequestFlag.Undefined, new HandlerUndefine());
             disp.RegisterHandler((ushort)RequestFlag.Disconnect, new HandlerDisconnect());
+            disp.RegisterHandler((ushort)MyRequestFlag.Ping, new HandlerPing());
+
 
             var logicDisp = new Dispatcher("Logic");
 

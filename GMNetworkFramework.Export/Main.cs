@@ -5,30 +5,33 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-using Console = Colorful.Console;
 
 namespace GMNetworkFramework.Export
 {
     public class Main
     {
+        [ToGM()]
         [DllExport]
         public static double Add(double a, double b)
         {
             return a + b;
         }
 
+        [ToGM()]
         [DllExport]
         public static double Minus(double a, double b)
         {
             return a - b;
         }
 
+        [ToGM]
         [DllExport]
         public static double Mult(double a, double b)
         {
             return a * b;
         }
 
+        [ToGM]
         [DllExport]
         public static string StringTest(string a, string b)
         {
@@ -36,6 +39,13 @@ namespace GMNetworkFramework.Export
             Console.WriteLine(b);
 
             return a + b;
+        }
+
+        [ToGM]
+        [DllExport]
+        public static string String()
+        {
+            return "qwe";
         }
 
         [DllImport("kernel32.dll")]

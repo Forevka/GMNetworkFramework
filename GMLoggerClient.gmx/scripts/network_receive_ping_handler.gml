@@ -10,3 +10,5 @@ buffer_write(buffer , buffer_u16, 2005);
 //Return ping to client.
 network_send_raw(socket, buffer, buffer_tell(buffer));
 buffer_delete(buffer);
+
+client_raw_send_ping()

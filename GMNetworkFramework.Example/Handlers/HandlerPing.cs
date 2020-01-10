@@ -14,11 +14,11 @@ namespace GMNetworkFramework.Example.Handlers
         public Dictionary<string, string> Process(BaseRequestModel model, UserModel user, SocketHelper mySocket, Dictionary<string, string> data)
         {
             var thisModel = model.ToModel<PingModelRequest>();
-            Console.WriteLine($"user float from ping {thisModel._float}");
+            Console.WriteLine($"user float from ping {thisModel.Ping}");
             //Send ping return to client.
             var responseModel = BaseResponseModel.Model<PingModelResponse>((ushort)MyResponseFlag.Ping);
             responseModel.msg = "abrakadabra";
-            responseModel.ping = thisModel._float + 1;
+            responseModel.Ping = thisModel.Ping;
 
             Console.WriteLine($"Received ping from {user.Name}");
             mySocket.SendMessage(responseModel);

@@ -16,7 +16,6 @@
       <script>scripts\client_raw_send_log.gml</script>
       <script>scripts\client_raw_send_ping.gml</script>
     </scripts>
-    <script>scripts\unix_timestamp.gml</script>
     <scripts name="network_handlers">
       <script>scripts\network_ping_handler.gml</script>
       <script>scripts\network_receive_disconnect_handler.gml</script>

@@ -34,7 +34,17 @@ show_debug_message(b)
 var c = Mult(3, 4)
 show_debug_message(c)
 
-show_debug_message(StringTest("abc", "qwer"))
+show_debug_message(StringTest("qweasd", "zxc"))
+
+var a = GetCurrentTimestamp()
+
+var b = GetCurrentTimestamp()
+
+show_debug_message(a)
+show_debug_message(b)
+
+show_debug_message(b - a)
+show_debug_message(Test(1))
 </string>
           </argument>
         </arguments>

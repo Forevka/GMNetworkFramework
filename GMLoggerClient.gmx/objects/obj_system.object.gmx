@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>show_debug_message(unix_timestamp())
+            <string>//show_debug_message(unix_timestamp())
 global.connected_to_server = false;
 global.ip_address = "192.168.0.1";
 global.players_online = 0
@@ -145,8 +145,8 @@ network_register_handler(1009, network_receive_disconnect_handler)
 
 if (keyboard_check_pressed(vk_space))
 {
-    show_debug_message(current_time)
-    show_debug_message(unix_timestamp())
+    //show_debug_message(current_time)
+    //show_debug_message(unix_timestamp())
 }
 </string>
           </argument>

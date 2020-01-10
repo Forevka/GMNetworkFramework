@@ -9,6 +9,6 @@ namespace GMNetworkFramework.Example.Models.Response
         public string msg { get; set; }
 
         [Position(1)]
-        public float ping { get; set; }
+        public string Ping { get; set; }
     }
 }
