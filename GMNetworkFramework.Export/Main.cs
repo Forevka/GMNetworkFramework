@@ -42,6 +42,12 @@ namespace GMNetworkFramework.Export
         public static extern bool AllocConsole();
 
         [DllExport]
+        public static bool OpenConsole()
+        {
+            return AllocConsole();
+        }
+
+        [DllExport]
         public static void LogLine(string a, int color)
         {
             Console.WriteLine(a, Color.FromKnownColor((KnownColor)color));
