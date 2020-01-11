@@ -57,10 +57,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GMNetworkFramework.Export\GMNetworkFramework.Export.csproj">
-      <Project>{6dbdbe16-f18b-4e4c-bb53-4e0d77f1bdb3}</Project>
-      <Name>GMNetworkFramework.Export</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GMNetworkFramework.Server\GMNetworkFramework.Server.csproj">
       <Project>{2FCFB8BF-2C28-42A3-88DC-7C8D5EA46237}</Project>
       <Name>GMNetworkFramework.Server</Name>
