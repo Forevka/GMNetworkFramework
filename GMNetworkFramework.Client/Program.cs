@@ -9,6 +9,8 @@ using System.Text;
 
 namespace GMLoggerClientTest
 {
+
+
     class Program
     {
         static void Main(string[] args)

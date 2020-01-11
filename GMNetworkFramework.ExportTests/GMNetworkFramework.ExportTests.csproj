@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DllToGmExporter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,8 +58,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>; Move all assemblies and related files to lib folder
-ROBOCOPY "$(TargetDir) " "$(SolutionDir)GMLoggerClient.gmx\extensions\GMNetworkFramework\ " /XF *gmx *.exe *.config *.manifest *.pdb /XD lib logs data /E /IS
-if %25errorlevel%25 leq 4 exit 0 else exit %25errorlevel%25</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -9,7 +9,6 @@ namespace GMNetworkFramework.Export
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class ToGMAttribute : Attribute
     {
-
         public ToGMAttribute(string ExternalName, string Help)
         {
             this.ExternalName = ExternalName;
@@ -25,7 +24,7 @@ namespace GMNetworkFramework.Export
         {
         }
 
-        public static GMType typeFromString(string typeName)
+        public static GMType TypeFromString(string typeName)
         {
             if (typeName == "Double")
                 return GMType.Double;
