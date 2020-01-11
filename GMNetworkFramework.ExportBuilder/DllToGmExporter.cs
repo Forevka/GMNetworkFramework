@@ -1,33 +1,31 @@
-﻿using System;
+﻿using GMNetworkFramework.Export;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using GMNetworkFramework.Export;
 
-namespace GMNetworkFramework.Tests
+namespace GMNetworkFramework.ExportBuilder
 {
     public class DllToGmExporter
     {
-        private string extName;
-        private string version;
-        private string dllName;
-        private string fileName;
-        private string GMProjectName;
+        private readonly string _extName;
+        private readonly string _version;
+        private readonly string _dllName;
+        private readonly string _fileName;
+        private readonly string _gmProjectName;
 
-        private XmlWriter writer;
+        private readonly XmlWriter _writer;
 
-        public DllToGmExporter(string extName, string version, string dllName, string fileName, string GMProjectName)
+        public DllToGmExporter(string extName, string version, string dllName, string fileName, string gmProjectName)
         {
-            this.extName = extName;
-            this.version = version;
-            this.dllName = dllName;
-            this.fileName = fileName;
-            this.GMProjectName = GMProjectName;
+            this._extName = extName;
+            this._version = version;
+            this._dllName = dllName;
+            this._fileName = fileName;
+            this._gmProjectName = gmProjectName;
 
             XmlWriterSettings xmlWriterSettings = new XmlWriterSettings()
             {
@@ -38,141 +36,140 @@ namespace GMNetworkFramework.Tests
                 ConformanceLevel = ConformanceLevel.Fragment,
             };
 
-            this.writer = XmlWriter.Create(fileName, xmlWriterSettings);
+            this._writer = XmlWriter.Create(fileName, xmlWriterSettings);
         }
 
         public void MoveDllAndExt()
         {
-            writer.Close();
-
             string basePath = Directory.GetCurrentDirectory(); // its already with bin\BuildMode(Debug/Release)
-            var basePath2 = Directory.GetParent(basePath).Parent.Parent; //move up to .sln directory
-            Console.WriteLine(basePath);
-            Console.WriteLine(basePath2.FullName);
+            var directoryInfo = Directory.GetParent(basePath).Parent;
+            if (directoryInfo == null) return;
+            var basePath2 = directoryInfo.Parent; //move up to .sln directory
+
             //moving dll to {GM_project_name}.gmx\extensions\{extName}
-            if (File.Exists(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + @"\\" + dllName))
+            if (File.Exists(basePath2.FullName + $"\\{_gmProjectName}.gmx\\" + @"\\extensions\\" + _extName + @"\\" + _dllName))
             {
-                File.Delete(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + @"\\" + dllName);
+                File.Delete(basePath2.FullName + $"\\{_gmProjectName}.gmx\\" + @"\\extensions\\" + _extName + @"\\" + _dllName);
             }
 
-            File.Move(basePath + "\\" + dllName, basePath2.FullName + @"\\GMLoggerClient.gmx\\" + @"\\extensions\\" + extName + @"\\"+ dllName);
+            File.Move(basePath + "\\" + _dllName, basePath2.FullName + $"\\{_gmProjectName}.gmx\\" + @"\\extensions\\" + _extName + @"\\"+ _dllName);
 
-            if (File.Exists(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + ".extension.gmx"))
+            if (File.Exists(basePath2.FullName + $"\\{_gmProjectName}.gmx\\" + @"\\extensions\\" + _extName + ".extension.gmx"))
             {
-                File.Delete(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + ".extension.gmx");
+                File.Delete(basePath2.FullName + $"\\{_gmProjectName}.gmx\\" + @"\\extensions\\" + _extName + ".extension.gmx");
             }
 
-            File.Move(basePath + "\\" + fileName, basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName +".extension.gmx");
+            File.Move(basePath + "\\" + _fileName, basePath2.FullName + $"\\{_gmProjectName}.gmx\\" + @"\\extensions\\" + _extName +".extension.gmx");
         }
 
         private void WriteMetaInfo()
         {
             DateTime curDate = DateTime.Today;
 
-            writer.WriteStartElement("extension");
-            writer.WriteElementString("name", extName);
-            writer.WriteElementString("version", version);
-            writer.WriteElementString("packageID", "");
-            writer.WriteElementString("ProductID", "");
-            writer.WriteElementString("date", curDate.ToString("dd/M/yyyy", CultureInfo.InvariantCulture));
-            writer.WriteElementString("license", "MIT");
-            writer.WriteElementString("description", "");
-            writer.WriteElementString("helpfile", "");
-            writer.WriteElementString("installdir", "");
-            writer.WriteElementString("classname", "");
-            writer.WriteElementString("sourcedir", "");
-            writer.WriteElementString("androidsourcedir", "");
-            writer.WriteElementString("macsourcedir", "");
-            writer.WriteElementString("maclinkerflags", "");
-            writer.WriteElementString("maccompilerflags", "");
-            writer.WriteElementString("androidinject", "");
-            writer.WriteElementString("androidmanifestinject", "");
-            writer.WriteElementString("iosplistinject", "");
-            writer.WriteElementString("androidactivityinject", "");
-            writer.WriteElementString("gradleinject", "");
-            writer.WriteStartElement("iosSystemFrameworks");
-            writer.WriteEndElement();
-            writer.WriteStartElement("iosThirdPartyFrameworks");
-            writer.WriteEndElement();
-            writer.WriteStartElement("ConfigOptions");
-                writer.WriteStartElement("Config");
-                    writer.WriteAttributeString("name", "Default");
-                    writer.WriteElementString("CopyToMask", "105553895358702");
-                writer.WriteEndElement();
-            writer.WriteEndElement();
+            _writer.WriteStartElement("extension");
+            _writer.WriteElementString("name", _extName);
+            _writer.WriteElementString("version", _version);
+            _writer.WriteElementString("packageID", "");
+            _writer.WriteElementString("ProductID", "");
+            _writer.WriteElementString("date", curDate.ToString("dd/M/yyyy", CultureInfo.InvariantCulture));
+            _writer.WriteElementString("license", "MIT");
+            _writer.WriteElementString("description", "");
+            _writer.WriteElementString("helpfile", "");
+            _writer.WriteElementString("installdir", "");
+            _writer.WriteElementString("classname", "");
+            _writer.WriteElementString("sourcedir", "");
+            _writer.WriteElementString("androidsourcedir", "");
+            _writer.WriteElementString("macsourcedir", "");
+            _writer.WriteElementString("maclinkerflags", "");
+            _writer.WriteElementString("maccompilerflags", "");
+            _writer.WriteElementString("androidinject", "");
+            _writer.WriteElementString("androidmanifestinject", "");
+            _writer.WriteElementString("iosplistinject", "");
+            _writer.WriteElementString("androidactivityinject", "");
+            _writer.WriteElementString("gradleinject", "");
+            _writer.WriteStartElement("iosSystemFrameworks");
+            _writer.WriteEndElement();
+            _writer.WriteStartElement("iosThirdPartyFrameworks");
+            _writer.WriteEndElement();
+            _writer.WriteStartElement("ConfigOptions");
+                _writer.WriteStartElement("Config");
+                    _writer.WriteAttributeString("name", "Default");
+                    _writer.WriteElementString("CopyToMask", "105553895358702");
+                _writer.WriteEndElement();
+            _writer.WriteEndElement();
 
-            writer.WriteStartElement("androidPermissions");
-            writer.WriteEndElement();
+            _writer.WriteStartElement("androidPermissions");
+            _writer.WriteEndElement();
 
-            writer.WriteStartElement("IncludedResources");
-            writer.WriteEndElement();
+            _writer.WriteStartElement("IncludedResources");
+            _writer.WriteEndElement();
 
             /*functions and extensions must be written in 'files' Element*/
-            writer.WriteStartElement("files");
-                writer.WriteStartElement("file");
-                    writer.WriteElementString("filename", dllName);
-                    writer.WriteElementString("origname", $"extensions\\{dllName}");
-                    writer.WriteElementString("init", "");
-                    writer.WriteElementString("final", "");
-                    writer.WriteElementString("kind", "1");
-                    writer.WriteElementString("uncompress", "0");
-                    writer.WriteStartElement("ConfigOptions");
-                        writer.WriteStartElement("Config");
-                            writer.WriteAttributeString("name", "Default");
-                            writer.WriteElementString("CopyToMask", "105553895358702");
-                        writer.WriteEndElement();
-                writer.WriteEndElement();//file end
+            _writer.WriteStartElement("files");
+                _writer.WriteStartElement("file");
+                    _writer.WriteElementString("filename", _dllName);
+                    _writer.WriteElementString("origname", $"extensions\\{_dllName}");
+                    _writer.WriteElementString("init", "");
+                    _writer.WriteElementString("final", "");
+                    _writer.WriteElementString("kind", "1");
+                    _writer.WriteElementString("uncompress", "0");
+                    _writer.WriteStartElement("ConfigOptions");
+                        _writer.WriteStartElement("Config");
+                            _writer.WriteAttributeString("name", "Default");
+                            _writer.WriteElementString("CopyToMask", "105553895358702");
+                        _writer.WriteEndElement();
+                _writer.WriteEndElement();//file end
 
-            writer.WriteStartElement("ProxyFiles");
-            writer.WriteEndElement();
+            _writer.WriteStartElement("ProxyFiles");
+            _writer.WriteEndElement();
 
-            writer.WriteStartElement("functions");
+            _writer.WriteStartElement("functions");
         }
 
         private void WriteFunctionInfo(MethInfo methodInfo)
         {
-            writer.WriteStartElement("function");
+            _writer.WriteStartElement("function");
 
-                writer.WriteElementString("name", methodInfo.Attribute.Name);
-                writer.WriteElementString("externalName", methodInfo.Attribute.ExternalName);
-                writer.WriteElementString("kind", "12");
-                writer.WriteElementString("help", methodInfo.Attribute.Help);
-                writer.WriteElementString("returnType", ((int)methodInfo.Attribute.ReturnType).ToString());
-                writer.WriteElementString("argCount", methodInfo.Attribute.ArgCount.ToString());
+                _writer.WriteElementString("name", methodInfo.Attribute.Name);
+                _writer.WriteElementString("externalName", methodInfo.Attribute.ExternalName);
+                _writer.WriteElementString("kind", "12");
+                _writer.WriteElementString("help", methodInfo.Attribute.Help);
+                _writer.WriteElementString("returnType", ((int)methodInfo.Attribute.ReturnType).ToString());
+                _writer.WriteElementString("argCount", methodInfo.Attribute.ArgCount.ToString());
 
-                    writer.WriteStartElement("args");
-                    foreach (var arg in methodInfo.Attribute.args)
+                    _writer.WriteStartElement("args");
+                    foreach (var arg in methodInfo.Attribute.Args)
                     {
-                        writer.WriteElementString("arg", ((int)arg).ToString());
+                        _writer.WriteElementString("arg", ((int)arg).ToString());
                     }
-                    writer.WriteEndElement();
+                    _writer.WriteEndElement();
 
-            writer.WriteEndElement();
+            _writer.WriteEndElement();
         }
 
-        private static List<MethInfo> FindPropertyToGm(Type Class)
+        private static List<MethInfo> FindPropertyToGm(Type @class)
         {
-            var methods = Class.GetMethods().ToList();///.GetProperties(BindingFlags. | BindingFlags.Instance).ToList();
+            var methods = @class.GetMethods().ToList();
 
             var thisMethods = new List<MethInfo>();
 
             foreach (var method in methods)
             {
-                var attrs = System.Attribute.GetCustomAttributes(method, typeof(ToGMAttribute));
+                var attrs = Attribute.GetCustomAttributes(method, typeof(ToGMAttribute));
 
                 foreach (var attr in attrs)
                 {
                     var p = (ToGMAttribute)attr;
                     var paramss = method.GetParameters();
-                    p.args = new GMType[paramss.Length];
+                    p.Args = new GMType[paramss.Length];
                     for (var i = 0; i < paramss.Length; i += 1)// (var par in paramss)
                     {
-                        p.args[i] = ToGMAttribute.TypeFromString(paramss[i].ParameterType.Name);
-                        Console.WriteLine(p.args[i]);
+                        p.Args[i] = ToGMAttribute.TypeFromString(paramss[i].ParameterType.Name);
+                        Console.WriteLine(p.Args[i]);
                     }
 
                     p.ReturnType = ToGMAttribute.TypeFromString(method.ReturnType.Name);
-                    p.ArgCount = p.args.Length > 0 ? p.args.Length : -1;
+                    p.ArgCount = p.Args.Length > 0 ? p.Args.Length : -1;
                     p.Name = method.Name;
 
                     if (p.ExternalName == null)
@@ -187,11 +184,13 @@ namespace GMNetworkFramework.Tests
 
         private void EndWriteInfo()
         {
-            writer.WriteEndElement();
-            writer.WriteEndElement();
-            writer.WriteEndElement();
-            writer.WriteEndElement();
-            writer.Flush();
+            _writer.WriteEndElement();
+            _writer.WriteEndElement();
+            _writer.WriteEndElement();
+            _writer.WriteEndElement();
+            _writer.Flush();
+
+            _writer.Close();
         }
 
 

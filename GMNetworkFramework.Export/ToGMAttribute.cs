@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GMNetworkFramework.Export
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class ToGMAttribute : Attribute
     {
-        public ToGMAttribute(string ExternalName, string Help)
+        public ToGMAttribute(string externalName, string help)
         {
-            this.ExternalName = ExternalName;
-            this.Help = Help;
+            ExternalName = externalName;
+            Help = help;
         }
 
-        public ToGMAttribute(string Help)
+        public ToGMAttribute(string help)
         {
-            this.Help = Help;
+            this.Help = help;
         }
 
         public ToGMAttribute()
@@ -28,10 +24,7 @@ namespace GMNetworkFramework.Export
         {
             if (typeName == "Double")
                 return GMType.Double;
-            else
-            {
-                return GMType.String;
-            }
+            return GMType.String;
         }
 
         public string Name { get; set; }
@@ -43,10 +36,10 @@ namespace GMNetworkFramework.Export
 
         public int ArgCount { get; set; }
 
-        public GMType[] args { get; set; }
+        public GMType[] Args { get; set; }
     }
 
-    public enum GMType:int
+    public enum GMType
     {
         String = 1,
         Double = 2,

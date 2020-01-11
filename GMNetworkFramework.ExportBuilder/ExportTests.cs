@@ -1,7 +1,7 @@
 ﻿using GMNetworkFramework.Export;
 using NUnit.Framework;
 
-namespace GMNetworkFramework.Tests
+namespace GMNetworkFramework.ExportBuilder
 {
     [TestFixture]
     class ExportTests

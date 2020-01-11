@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GMNetworkFramework.Export;
+﻿using GMNetworkFramework.Export;
+using GMNetworkFramework.ExportBuilder;
+using System;
+using System.Linq.Expressions;
 using System.Reflection;
-using System.Xml;
-using GMNetworkFramework.Tests;
 
-namespace GMNetworkFramework.ExportTests
+namespace GMNetworkFramework.ExportBuilder
 {
     class Program
     {
@@ -20,7 +16,6 @@ namespace GMNetworkFramework.ExportTests
             toGmExporter.MoveDllAndExt();
 
             Console.ReadKey();
-
 
         }
     }
