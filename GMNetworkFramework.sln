@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Export",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.Example", "GMNetworkFramework.Example\GMNetworkFramework.Example.csproj", "{CD548818-F73B-42C6-8519-00983E41F544}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.ExportTests", "GMNetworkFramework.ExportTests\GMNetworkFramework.ExportTests.csproj", "{325EC144-D171-43B5-A27A-F76C401EF66D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMNetworkFramework.ExportBuilder", "GMNetworkFramework.ExportBuilder\GMNetworkFramework.ExportBuilder.csproj", "{325EC144-D171-43B5-A27A-F76C401EF66D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

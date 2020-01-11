@@ -20,6 +20,8 @@ namespace GMNetworkFramework.ExportTests
             toGmExporter.MoveDllAndExt();
 
             Console.ReadKey();
+
+
         }
     }
 }

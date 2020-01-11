@@ -194,7 +194,6 @@ namespace GMNetworkFramework.Tests
             writer.Flush();
         }
 
-        
 
         public void ExportToExtension(Assembly asm)
         {
