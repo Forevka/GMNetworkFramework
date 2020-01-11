@@ -14,9 +14,9 @@ namespace GMNetworkFramework.ExportTests
     {
         static void Main(string[] args)
         {
-            var toGmExporter = new DllToGmExporter("GMNetworkFramework", "1.0.0", "GMNetworkFramework.Export.dll", "GMNetworkExtension.gmx");
+            var toGmExporter = new DllToGmExporter("GMNetworkFramework", "1.0.0", "GMNetworkFramework.Export.dll", "GMNetworkExtension.gmx", "GMLoggerClient");
 
-            //toGmExporter.ExportToExtension(typeof(Utils));
+            toGmExporter.ExportToExtension(Assembly.GetAssembly(typeof(Utils)));
             toGmExporter.MoveDllAndExt();
 
             Console.ReadKey();

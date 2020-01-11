@@ -17,15 +17,17 @@ namespace GMNetworkFramework.Tests
         private string version;
         private string dllName;
         private string fileName;
+        private string GMProjectName;
 
         private XmlWriter writer;
 
-        public DllToGmExporter(string extName, string version, string dllName, string fileName)
+        public DllToGmExporter(string extName, string version, string dllName, string fileName, string GMProjectName)
         {
             this.extName = extName;
             this.version = version;
             this.dllName = dllName;
             this.fileName = fileName;
+            this.GMProjectName = GMProjectName;
 
             XmlWriterSettings xmlWriterSettings = new XmlWriterSettings()
             {
@@ -41,13 +43,26 @@ namespace GMNetworkFramework.Tests
 
         public void MoveDllAndExt()
         {
+            writer.Close();
+
             string basePath = Directory.GetCurrentDirectory(); // its already with bin\BuildMode(Debug/Release)
             var basePath2 = Directory.GetParent(basePath).Parent.Parent; //move up to .sln directory
             Console.WriteLine(basePath);
             Console.WriteLine(basePath2.FullName);
             //moving dll to {GM_project_name}.gmx\extensions\{extName}
-            File.Move(basePath + "\\" + dllName, basePath2.FullName + @"\\GMLoggerClient.gmx\\" + @"\\extensions\\" +extName + @"\\"+ dllName);
-            File.Move(basePath + "\\" + dllName, basePath2.FullName + @"\\GMLoggerClient.gmx\\" + @"\\extensions\\" + extName + @"\\" + dllName);
+            if (File.Exists(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + @"\\" + dllName))
+            {
+                File.Delete(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + @"\\" + dllName);
+            }
+
+            File.Move(basePath + "\\" + dllName, basePath2.FullName + @"\\GMLoggerClient.gmx\\" + @"\\extensions\\" + extName + @"\\"+ dllName);
+
+            if (File.Exists(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + ".extension.gmx"))
+            {
+                File.Delete(basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName + ".extension.gmx");
+            }
+
+            File.Move(basePath + "\\" + fileName, basePath2.FullName + $"\\{GMProjectName}.gmx\\" + @"\\extensions\\" + extName +".extension.gmx");
         }
 
         private void WriteMetaInfo()
@@ -181,11 +196,11 @@ namespace GMNetworkFramework.Tests
 
         
 
-        public void ExportToExtension(Type type)
+        public void ExportToExtension(Assembly asm)
         {
             WriteMetaInfo();
 
-            var theList = Assembly.GetAssembly(type).GetTypes()
+            var theList = asm.GetTypes()
                 .Where(x => x.IsClass)
                 .ToList();
 
