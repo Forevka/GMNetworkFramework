@@ -8,7 +8,7 @@ namespace GMNetworkFramework.Example.Handlers
 {
     class HandlerUndefine : IHandler
     {
-        public Dictionary<string, string> Process(BaseRequestModel model, UserModel user, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseRequestModel model, UserBaseModel user, SocketHelper mySocket, Dictionary<string, string> data)
         {
 
             return data;

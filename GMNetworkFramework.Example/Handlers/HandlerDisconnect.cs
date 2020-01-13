@@ -14,7 +14,7 @@ namespace GMNetworkFramework.Example.Handlers
 {
     class HandlerDisconnect : IHandler
     {
-        public Dictionary<string, string> Process(BaseRequestModel model, UserModel user, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseRequestModel model, UserBaseModel user, SocketHelper mySocket, Dictionary<string, string> data)
         {
             var resp = BaseResponseModel.Model<PlayersCountModelResponse>((ushort)MyResponseFlag.PlayersCount);
             resp.Count = mySocket.ParentServer.Clients.Count;

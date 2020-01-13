@@ -53,6 +53,7 @@
     <Compile Include="Handlers\HandlerUndefine.cs" />
     <Compile Include="Handlers\Unhandled.cs" />
     <Compile Include="Middlewares\MiddlewareLogTime.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Request\LogModelRequest.cs" />

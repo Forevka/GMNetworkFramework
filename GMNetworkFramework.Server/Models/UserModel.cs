@@ -2,7 +2,7 @@
 
 namespace GMNetworkFramework.Server.Models
 {
-    public class UserModel
+    public class UserBaseModel
     {
         public string IpAddress { get; set; }
 

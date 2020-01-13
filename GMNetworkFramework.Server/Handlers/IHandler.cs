@@ -6,6 +6,6 @@ namespace GMNetworkFramework.Server.Handlers
 {
     public interface IHandler
     {
-        Dictionary<string, string> Process(BaseRequestModel model, UserModel user, SocketHelper mySocket, Dictionary<string, string> data);
+        Dictionary<string, string> Process(BaseRequestModel model, UserBaseModel user, SocketHelper mySocket, Dictionary<string, string> data);
     }
 }

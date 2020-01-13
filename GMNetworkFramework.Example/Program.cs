@@ -7,6 +7,8 @@ using GMNetworkFramework.Server.Utils;
 //using NLog.Fluent;
 using System;
 using System.Globalization;
+using GMNetworkFramework.Example.Models;
+using GMNetworkFramework.Server.Models;
 
 namespace GMNetworkFramework.Example
 {
@@ -56,7 +58,7 @@ namespace GMNetworkFramework.Example
 
             disp.AttachDispatcher(logicDisp);
 
-            server.StartServer(10103);
+            server.StartServer<UserModel>(10103);
 
             Console.WriteLine("Server Started!");
         }

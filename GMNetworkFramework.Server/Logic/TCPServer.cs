@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using GMNetworkFramework.Server.Models;
 
 namespace GMNetworkFramework.Server.Logic
 {
@@ -42,7 +43,7 @@ namespace GMNetworkFramework.Server.Logic
         /// <summary>
         /// Starts the server.
         /// </summary>
-        public void StartServer(int tcpPort)
+        public void StartServer<T>(int tcpPort) where T : UserBaseModel, new()
         {
             if (mainDispatcher == null)
                 throw new MainDispatcherNotFound("Use method SetMainDispatcher before StartServer");
@@ -54,7 +55,7 @@ namespace GMNetworkFramework.Server.Logic
             //Starts a listen thread to listen for connections.
             TcpThread = new Thread(new ThreadStart(delegate
             {
-                Listen(tcpPort);
+                Listen<T>(tcpPort);
             }));
             TcpThread.Start();
             Console.WriteLine("Listen thread started.");
@@ -160,7 +161,7 @@ namespace GMNetworkFramework.Server.Logic
         /// <summary>
         /// Listens for clients and starts threads to handle them.
         /// </summary>
-        private async void Listen(int port)
+        private async void Listen<T>(int port) where T: UserBaseModel, new()
         {
             TcpListener = new TcpListener(IPAddress.Any, port);
             TcpListener.Start();
@@ -172,7 +173,7 @@ namespace GMNetworkFramework.Server.Logic
                     var tcpClient = await TcpListener.AcceptTcpClientAsync();
                     SocketHelper helper = new SocketHelper
                     {
-                        Me = new Models.UserModel()
+                        Me = new T()//Models.UserBaseModel()
                     };
                     Clients.Add(helper);
 

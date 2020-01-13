@@ -11,7 +11,7 @@ namespace GMNetworkFramework.Example.Handlers
 {
     class HandlerPing : IHandler
     {
-        public Dictionary<string, string> Process(BaseRequestModel model, UserModel user, SocketHelper mySocket, Dictionary<string, string> data)
+        public Dictionary<string, string> Process(BaseRequestModel model, UserBaseModel user, SocketHelper mySocket, Dictionary<string, string> data)
         {
             var thisModel = model.ToModel<PingModelRequest>();
             Console.WriteLine($"user float from ping {thisModel.Ping}");
